@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Montserrat:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  body{margin:0;background:#F5F1E8;}
+  @media (max-width:980px){ .mc-dest-grid{grid-template-columns:1fr 1fr !important;} .mc-feat{grid-template-columns:1fr !important;} .mc-feat-img{min-height:300px !important;} }
+  @media (max-width:600px){ .mc-dest-grid{grid-template-columns:1fr !important;} .mc-dest-hero h1{font-size:34px !important;} .mc-section{padding:54px 22px !important;} }
+</style>
+</helmet>
+<div style="font-family:'Inter',sans-serif;background:#F5F1E8;color:#2C2C2C">
+  <dc-import name="Header" active="destinations" hint-size="100%,76px"></dc-import>
+
+  <!-- HERO -->
+  <section class="mc-dest-hero" style="position:relative;min-height:440px;display:flex;align-items:center;padding:90px 32px;background:#0F4C75;background-image:linear-gradient(120deg,rgba(15,42,58,0.78),rgba(15,76,117,0.45)),url('https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=2000&q=80');background-size:cover;background-position:center">
+    <div style="max-width:1280px;margin:0 auto;width:100%">
+      <span style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#E3A828">Where We Go</span>
+      <h1 style="font-family:'Playfair Display',serif;font-weight:700;font-size:50px;color:#F5F1E8;margin:12px 0 12px;line-height:1.08;max-width:680px">Discover the Caribbean's finest islands</h1>
+      <p style="font-size:17px;color:rgba(245,241,232,0.9);margin:0;max-width:560px;line-height:1.6">Six signature destinations, each with its own rhythm. Find the one that calls to you — then let us craft the journey around it.</p>
+    </div>
+  </section>
+
+  <!-- FEATURED DESTINATION -->
+  <section class="mc-section" style="max-width:1280px;margin:0 auto;padding:80px 32px 40px">
+    <div class="mc-feat" style="display:grid;grid-template-columns:1.1fr 1fr;gap:0;border-radius:18px;overflow:hidden;box-shadow:0 10px 40px rgba(15,76,117,0.12)">
+      <div class="mc-feat-img" style="min-height:420px;background:#0F4C75 center/cover;background-image:url('https://images.unsplash.com/photo-1473116763249-2faaef81ccda?auto=format&fit=crop&w=1200&q=80')"></div>
+      <div style="background:#fff;padding:48px 44px;display:flex;flex-direction:column;justify-content:center">
+        <span style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#E3A828">Featured Island</span>
+        <h2 style="font-family:'Playfair Display',serif;font-weight:700;font-size:38px;color:#2C2C2C;margin:10px 0 16px;line-height:1.1">St. Lucia</h2>
+        <p style="font-size:15.5px;line-height:1.75;color:#4A4A4A;margin:0 0 26px">The Caribbean at its most dramatic — the twin Pitons rising sheer from a sapphire sea, rainforest spilling to the shoreline, and geothermal springs steaming in the hills. Pair barefoot luxury resorts with volcano hikes, catamaran sails and Creole feasts.</p>
+        <div style="display:flex;gap:28px;margin-bottom:30px;flex-wrap:wrap">
+          <div><div style="font-family:'Playfair Display',serif;font-weight:700;font-size:24px;color:#1B7A5C">2</div><div style="font-size:12.5px;color:#8A8A8A;font-family:'Montserrat',sans-serif">Signature tours</div></div>
+          <div><div style="font-family:'Playfair Display',serif;font-weight:700;font-size:24px;color:#1B7A5C">82°F</div><div style="font-size:12.5px;color:#8A8A8A;font-family:'Montserrat',sans-serif">Avg. temperature</div></div>
+          <div><div style="font-family:'Playfair Display',serif;font-weight:700;font-size:24px;color:#1B7A5C">Nov–Apr</div><div style="font-size:12.5px;color:#8A8A8A;font-family:'Montserrat',sans-serif">Best season</div></div>
+        </div>
+        <a href="Tours.dc.html" style="align-self:flex-start;font-family:'Montserrat',sans-serif;font-weight:600;font-size:15px;color:#F5F1E8;background:#1B7A5C;padding:14px 30px;border-radius:8px;text-decoration:none;transition:background .18s ease" style-hover="background:#15543F">Explore St. Lucia tours</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- DESTINATION GRID -->
+  <section class="mc-section" style="max-width:1280px;margin:0 auto;padding:40px 32px 80px">
+    <h2 style="font-family:'Playfair Display',serif;font-weight:700;font-size:32px;color:#2C2C2C;margin:0 0 30px;text-align:center">Every island, beautifully covered</h2>
+    <div class="mc-dest-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:24px">
+      <sc-for list="{{ destinations }}" as="d" hint-placeholder-count="6">
+        <a href="Tours.dc.html" style="position:relative;display:block;height:380px;border-radius:16px;overflow:hidden;text-decoration:none;background:#0F4C75 center/cover;background-image:{{ d.bg }};box-shadow:0 4px 16px rgba(0,0,0,0.1);transition:transform .25s ease, box-shadow .25s ease" style-hover="transform:translateY(-6px);box-shadow:0 14px 40px rgba(15,76,117,0.22)">
+          <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,42,58,0.05) 30%,rgba(15,42,58,0.9) 100%)"></div>
+          <span style="position:absolute;top:16px;left:16px;font-family:'Montserrat',sans-serif;font-weight:600;font-size:11px;letter-spacing:0.5px;text-transform:uppercase;color:#0F4C75;background:#E3A828;padding:6px 12px;border-radius:6px">{{ d.tag }}</span>
+          <div style="position:absolute;left:0;right:0;bottom:0;padding:26px">
+            <h3 style="font-family:'Playfair Display',serif;font-weight:700;font-size:26px;color:#F5F1E8;margin:0 0 8px">{{ d.name }}</h3>
+            <p style="font-size:14px;color:rgba(245,241,232,0.88);margin:0 0 12px;line-height:1.55">{{ d.desc }}</p>
+            <span style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:13px;color:#E3A828">Explore →</span>
+          </div>
+        </a>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- CTA STRIP -->
+  <section style="background:#1B7A5C;background-image:linear-gradient(120deg,#0F4C75,#1B7A5C)">
+    <div class="mc-section" style="max-width:1000px;margin:0 auto;padding:70px 32px;text-align:center">
+      <h2 style="font-family:'Playfair Display',serif;font-weight:700;font-size:34px;color:#F5F1E8;margin:0 0 12px">Can't decide? Let us help.</h2>
+      <p style="font-size:16px;color:rgba(245,241,232,0.88);margin:0 0 28px;max-width:540px;margin-left:auto;margin-right:auto">Tell us how you like to travel and our concierge team will match you to the perfect island and itinerary.</p>
+      <a href="Contact.dc.html" style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:16px;color:#1B7A5C;background:#E3A828;padding:15px 36px;border-radius:8px;text-decoration:none;display:inline-block;transition:transform .18s ease" style-hover="transform:translateY(-2px)">Plan My Journey</a>
+    </div>
+  </section>
+
+  <dc-import name="Footer" hint-size="100%,420px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals(){
+    const img = id => `url('https://images.unsplash.com/${id}?auto=format&fit=crop&w=900&q=80')`;
+    return {
+      destinations: [
+        { name:'St. Lucia', tag:'Adventure & Luxury', desc:'Twin Pitons, rainforest and geothermal springs.', bg:img('photo-1473116763249-2faaef81ccda') },
+        { name:'Barbados', tag:'Beach & Heritage', desc:'Platinum-coast resorts, rum and Bajan culture.', bg:img('photo-1519046904884-53103b34b206') },
+        { name:'The Bahamas', tag:'Island Hopping', desc:'700 islands of powder sand and glass-clear water.', bg:img('photo-1505228395891-9a51e7e86bf6') },
+        { name:'Jamaica', tag:'Culture & Reef', desc:'Reggae, Blue Mountain coffee and hidden coves.', bg:img('photo-1507525428034-b723cf961d3e') },
+        { name:'Turks & Caicos', tag:'Diving & Villas', desc:'Grace Bay sands and world-class reef diving.', bg:img('photo-1544551763-46a013bb70d5') },
+        { name:'Grenada', tag:'Spice & Sailing', desc:'The Spice Isle — nutmeg, waterfalls and the Grenadines.', bg:img('photo-1468413253725-0d5181091126') },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

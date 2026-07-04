@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Montserrat:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+@media (max-width: 860px){
+  .mc-desktop-nav{display:none !important;}
+  .mc-desktop-cta{display:none !important;}
+  .mc-burger{display:flex !important;}
+}
+</style>
+</helmet>
+<header style="position:sticky;top:0;z-index:1000;background:rgba(9,12,11,0.94);backdrop-filter:blur(12px);border-bottom:1px solid rgba(227,168,40,0.22)">
+  <div style="max-width:1280px;margin:0 auto;padding:0 32px;height:78px;display:flex;align-items:center;justify-content:space-between;gap:24px">
+    <a href="Home.dc.html" style="display:flex;align-items:center;gap:13px;text-decoration:none;flex-shrink:0">
+      <div style="width:46px;height:46px;border-radius:50%;overflow:hidden;border:1.5px solid rgba(227,168,40,0.65);background:#000 center/cover;background-image:url('assets/logo-mark.png');box-shadow:0 0 0 3px rgba(227,168,40,0.1)"></div>
+      <div style="display:flex;flex-direction:column;line-height:1.1">
+        <span style="font-family:'Playfair Display',serif;font-weight:700;font-size:19px;background:linear-gradient(180deg,#F6CE5B 10%,#C68A1E 95%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent;letter-spacing:0.2px">Mista Concierge</span>
+        <span style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:8.5px;color:#C9A24A;letter-spacing:2.8px;text-transform:uppercase">Bucketlist Vacation · Caribbean</span>
+      </div>
+    </a>
+    <nav style="display:flex;align-items:center;gap:34px" class="mc-desktop-nav">
+      <sc-for list="{{ navItems }}" as="item" hint-placeholder-count="5">
+        <a href="{{ item.href }}" style="{{ item.style }}" style-hover="color:#F6CE5B">{{ item.label }}</a>
+      </sc-for>
+    </nav>
+    <div style="display:flex;align-items:center;gap:14px;flex-shrink:0">
+      <a href="Contact.dc.html" class="mc-desktop-cta" style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:14px;color:#0A0D0C;background:linear-gradient(180deg,#F2C14E,#D9A526);padding:11px 24px;border-radius:8px;text-decoration:none;transition:all .18s ease;box-shadow:0 4px 14px rgba(227,168,40,0.28)" style-hover="transform:translateY(-1px);box-shadow:0 6px 18px rgba(227,168,40,0.42)">Book Now</a>
+      <button onClick="{{ toggleMenu }}" class="mc-burger" aria-label="Menu" style="display:none;width:44px;height:44px;border:none;background:transparent;cursor:pointer;flex-direction:column;justify-content:center;gap:5px;align-items:center;padding:0">
+        <span style="width:24px;height:2px;background:#E3A828;border-radius:2px"></span>
+        <span style="width:24px;height:2px;background:#E3A828;border-radius:2px"></span>
+        <span style="width:24px;height:2px;background:#E3A828;border-radius:2px"></span>
+      </button>
+    </div>
+  </div>
+  <sc-if value="{{ menuOpen }}" hint-placeholder-val="{{ false }}">
+    <div onClick="{{ closeMenu }}" style="position:fixed;inset:78px 0 0 0;background:rgba(0,0,0,0.55);z-index:998"></div>
+    <div style="position:fixed;top:0;left:0;bottom:0;width:78%;max-width:320px;background:#0A0D0C;z-index:999;padding:26px 24px;display:flex;flex-direction:column;gap:6px;box-shadow:8px 0 32px rgba(0,0,0,0.5);border-right:1px solid rgba(227,168,40,0.22)">
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
+        <div style="width:42px;height:42px;border-radius:50%;overflow:hidden;border:1.5px solid rgba(227,168,40,0.65);background:#000 center/cover;background-image:url('assets/logo-mark.png')"></div>
+        <span style="font-family:'Playfair Display',serif;font-weight:700;font-size:19px;background:linear-gradient(180deg,#F6CE5B,#C68A1E);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">Mista Concierge</span>
+        <button onClick="{{ closeMenu }}" style="margin-left:auto;width:36px;height:36px;border:none;background:rgba(227,168,40,0.14);border-radius:8px;color:#E3A828;font-size:20px;cursor:pointer">×</button>
+      </div>
+      <sc-for list="{{ navItems }}" as="item" hint-placeholder-count="5">
+        <a href="{{ item.href }}" style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:17px;color:#EDE6D4;text-decoration:none;padding:14px 8px;border-bottom:1px solid rgba(227,168,40,0.14)">{{ item.label }}</a>
+      </sc-for>
+      <a href="Contact.dc.html" style="margin-top:18px;text-align:center;font-family:'Montserrat',sans-serif;font-weight:600;font-size:15px;color:#0A0D0C;background:linear-gradient(180deg,#F2C14E,#D9A526);padding:14px;border-radius:8px;text-decoration:none">Book Now</a>
+    </div>
+  </sc-if>
+</header>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:78},&quot;active&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;home&quot;,&quot;tours&quot;,&quot;destinations&quot;,&quot;about&quot;,&quot;contact&quot;],&quot;default&quot;:&quot;home&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  state = { menuOpen: false };
+  renderVals() {
+    const active = this.props.active || 'home';
+    const base = "font-family:'Montserrat',sans-serif;font-weight:500;font-size:14.5px;text-decoration:none;transition:color .18s ease;padding:4px 0;position:relative;";
+    const items = [
+      { key: 'home', label: 'Home', href: 'Home.dc.html' },
+      { key: 'tours', label: 'Tours & Experiences', href: 'Tours.dc.html' },
+      { key: 'destinations', label: 'Destinations', href: 'Destinations.dc.html' },
+      { key: 'about', label: 'About Us', href: 'About.dc.html' },
+      { key: 'contact', label: 'Contact', href: 'Contact.dc.html' },
+    ];
+    const navItems = items.map(it => ({
+      ...it,
+      style: base + (it.key === active
+        ? 'color:#F6CE5B;border-bottom:2px solid #E3A828;'
+        : 'color:#E0DAC9;'),
+    }));
+    return {
+      navItems,
+      menuOpen: this.state.menuOpen,
+      toggleMenu: () => this.setState(s => ({ menuOpen: !s.menuOpen })),
+      closeMenu: () => this.setState({ menuOpen: false }),
+    };
+  }
+}
+</script>
+</body>
+</html>

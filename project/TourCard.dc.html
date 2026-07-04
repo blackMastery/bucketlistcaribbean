@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Montserrat:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+</helmet>
+<a href="TourDetail.dc.html" style="display:block;text-decoration:none;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.08);transition:transform .25s ease, box-shadow .25s ease;border:1px solid rgba(44,44,44,0.05)" style-hover="transform:translateY(-6px);box-shadow:0 14px 40px rgba(27,122,92,0.18)">
+  <div style="position:relative;height:230px;background:#15543F center/cover no-repeat;background-image:{{ imageBg }}">
+    <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(0,0,0,0) 45%,rgba(0,0,0,0.35) 100%)"></div>
+    <sc-if value="{{ hasBadge }}" hint-placeholder-val="{{ true }}">
+      <span style="position:absolute;top:14px;left:14px;font-family:'Montserrat',sans-serif;font-weight:600;font-size:11px;letter-spacing:0.5px;text-transform:uppercase;color:#fff;padding:6px 12px;border-radius:6px;background:{{ badgeColor }}">{{ badge }}</span>
+    </sc-if>
+    <button onClick="{{ toggleFav }}" aria-label="Save" style="position:absolute;top:12px;right:12px;width:38px;height:38px;border-radius:50%;border:none;background:rgba(255,255,255,0.9);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:17px;line-height:1;transition:transform .15s ease;color:{{ favColor }}" style-hover="transform:scale(1.12)">{{ favIcon }}</button>
+  </div>
+  <div style="padding:20px 20px 22px">
+    <div style="display:flex;align-items:center;gap:6px;margin-bottom:7px">
+      <span style="color:#1B7A5C;font-size:13px">◆</span>
+      <span style="font-family:'Montserrat',sans-serif;font-weight:500;font-size:12.5px;letter-spacing:0.3px;color:#1B7A5C;text-transform:uppercase">{{ location }}</span>
+    </div>
+    <h3 style="font-family:'Playfair Display',serif;font-weight:600;font-size:21px;color:#2C2C2C;margin:0 0 12px;line-height:1.25">{{ title }}</h3>
+    <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px">
+      <span style="color:#E3A828;font-size:14px;letter-spacing:1px">★★★★★</span>
+      <span style="font-family:'Inter',sans-serif;font-size:13px;color:#6B6B6B">{{ rating }} · {{ reviews }} reviews</span>
+    </div>
+    <div style="display:flex;align-items:flex-end;justify-content:space-between;padding-top:14px;border-top:1px solid rgba(44,44,44,0.08)">
+      <div>
+        <div style="font-family:'Inter',sans-serif;font-size:12px;color:#8A8A8A;margin-bottom:2px">{{ duration }}</div>
+        <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:22px;color:#E3A828">{{ price }}<span style="font-family:'Inter',sans-serif;font-weight:400;font-size:12px;color:#8A8A8A"> / person</span></div>
+      </div>
+      <span style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:13px;color:#fff;background:#1B7A5C;padding:9px 18px;border-radius:8px;transition:background .18s ease" style-hover="background:#15543F">View Tour</span>
+    </div>
+  </div>
+</a>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:380,&quot;height&quot;:480},&quot;image&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;title&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;St. Lucia Piton Luxury Escape&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;location&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Soufrière, St. Lucia&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;price&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;$2,980&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;rating&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;5.0&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;reviews&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;142&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;duration&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;5 days · 4 nights&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;badge&quot;:{&quot;editor&quot;:&quot;text&quot;,&quot;default&quot;:&quot;Bestseller&quot;,&quot;tsType&quot;:&quot;string&quot;},&quot;badgeColor&quot;:{&quot;editor&quot;:&quot;color&quot;,&quot;default&quot;:&quot;#FF6B5B&quot;,&quot;tsType&quot;:&quot;string&quot;}}">
+class Component extends DCLogic {
+  state = { fav: false };
+  renderVals() {
+    const badge = this.props.badge || '';
+    return {
+      imageBg: this.props.image ? `url("${this.props.image}")` : 'none',
+      title: this.props.title ?? 'Tour Experience',
+      location: this.props.location ?? 'Guyana',
+      price: this.props.price ?? '$0',
+      rating: this.props.rating ?? '4.9',
+      reviews: this.props.reviews ?? '0',
+      duration: this.props.duration ?? '',
+      hasBadge: !!badge,
+      badge,
+      badgeColor: this.props.badgeColor || '#FF6B5B',
+      fav: this.state.fav,
+      favIcon: this.state.fav ? '♥' : '♡',
+      favColor: this.state.fav ? '#FF6B5B' : '#2C2C2C',
+      toggleFav: (e) => { e.preventDefault(); this.setState(s => ({ fav: !s.fav })); },
+    };
+  }
+}
+</script>
+</body>
+</html>

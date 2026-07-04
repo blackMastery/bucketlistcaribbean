@@ -1,0 +1,22 @@
+import { Suspense } from "react";
+import { AuthForm } from "@/components/AuthForm";
+import { buildMetadata } from "@/lib/seo";
+
+export const metadata = buildMetadata({
+  title: "Create Account",
+  description: "Create a Mista Concierge Travel account to plan and track your journeys.",
+  path: "/signup",
+  noIndex: true,
+});
+
+export default function SignupPage() {
+  return (
+    <section className="mx-auto flex max-w-[460px] flex-col px-8 py-[72px] max-[640px]:px-[22px]">
+      <div className="rounded-[18px] bg-white p-6 shadow-[0_8px_32px_rgba(0,0,0,0.06)] sm:p-10">
+        <Suspense>
+          <AuthForm mode="signup" />
+        </Suspense>
+      </div>
+    </section>
+  );
+}

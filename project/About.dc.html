@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Montserrat:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  body{margin:0;background:#F5F1E8;}
+  @media (max-width:920px){ .mc-story{grid-template-columns:1fr !important;} .mc-story-img{min-height:320px !important;} .mc-team{grid-template-columns:1fr 1fr !important;} .mc-values{grid-template-columns:1fr 1fr !important;} }
+  @media (max-width:600px){ .mc-about-hero h1{font-size:34px !important;} .mc-section{padding:54px 22px !important;} .mc-team{grid-template-columns:1fr !important;} .mc-values{grid-template-columns:1fr !important;} }
+</style>
+</helmet>
+<div style="font-family:'Inter',sans-serif;background:#F5F1E8;color:#2C2C2C">
+  <dc-import name="Header" active="about" hint-size="100%,76px"></dc-import>
+
+  <!-- HERO -->
+  <section class="mc-about-hero" style="position:relative;min-height:420px;display:flex;align-items:center;padding:90px 32px;background:#0F4C75;background-image:linear-gradient(120deg,rgba(15,42,58,0.8),rgba(27,122,92,0.5)),url('https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=2000&q=80');background-size:cover;background-position:center">
+    <div style="max-width:1280px;margin:0 auto;width:100%">
+      <span style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#E3A828">About Us</span>
+      <h1 style="font-family:'Playfair Display',serif;font-weight:700;font-size:50px;color:#F5F1E8;margin:12px 0 12px;line-height:1.08;max-width:660px">Your gateway to unforgettable Caribbean experiences</h1>
+      <p style="font-size:17px;color:rgba(245,241,232,0.9);margin:0;max-width:560px;line-height:1.6">We don't sell trips. We craft the journeys you'll talk about for the rest of your life.</p>
+    </div>
+  </section>
+
+  <!-- STORY -->
+  <section class="mc-section" style="max-width:1180px;margin:0 auto;padding:84px 32px">
+    <div class="mc-story" style="display:grid;grid-template-columns:1fr 1fr;gap:56px;align-items:center">
+      <div>
+        <span style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#E3A828">Our Story</span>
+        <h2 style="font-family:'Playfair Display',serif;font-weight:700;font-size:36px;color:#2C2C2C;margin:12px 0 20px;line-height:1.15">Born on the islands, built for travelers</h2>
+        <p style="font-size:15.5px;line-height:1.8;color:#4A4A4A;margin:0 0 18px">Mista Concierge Travel began in 2014 with a simple belief: the Caribbean deserves to be experienced, not just visited. Founder Marcus "Mista" Alleyne grew up sailing between the islands, and watched too many visitors leave having seen only a resort wall.</p>
+        <p style="font-size:15.5px;line-height:1.8;color:#4A4A4A;margin:0">Today our team of islanders crafts bespoke journeys across fifteen destinations — opening doors to private chefs, hidden coves and family-run estates that no booking site can reach. Every itinerary is one of one.</p>
+      </div>
+      <div class="mc-story-img" style="min-height:480px;border-radius:18px;background:#000 center/contain no-repeat;background-image:url('assets/logo-full.png');box-shadow:0 10px 40px rgba(0,0,0,0.3);border:1px solid rgba(227,168,40,0.25)"></div>
+    </div>
+  </section>
+
+  <!-- VALUES -->
+  <section style="background:#1B7A5C;background-image:linear-gradient(160deg,#1B7A5C,#15543F)">
+    <div class="mc-section" style="max-width:1280px;margin:0 auto;padding:84px 32px">
+      <div style="text-align:center;max-width:620px;margin:0 auto 50px">
+        <span style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#E3A828">What We Stand For</span>
+        <h2 style="font-family:'Playfair Display',serif;font-weight:700;font-size:38px;color:#F5F1E8;margin:12px 0 0">Our core values</h2>
+      </div>
+      <div class="mc-values" style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px">
+        <sc-for list="{{ values }}" as="v" hint-placeholder-count="4">
+          <div style="background:rgba(245,241,232,0.07);border:1px solid rgba(245,241,232,0.14);border-radius:14px;padding:32px 26px;text-align:center">
+            <div style="width:60px;height:60px;border-radius:50%;background:rgba(227,168,40,0.16);border:1px solid rgba(227,168,40,0.4);display:flex;align-items:center;justify-content:center;margin:0 auto 18px;font-size:24px">{{ v.icon }}</div>
+            <h3 style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:18px;color:#F5F1E8;margin:0 0 9px">{{ v.title }}</h3>
+            <p style="font-size:14px;line-height:1.6;color:rgba(245,241,232,0.78);margin:0">{{ v.body }}</p>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <!-- TEAM -->
+  <section class="mc-section" style="max-width:1280px;margin:0 auto;padding:84px 32px">
+    <div style="text-align:center;max-width:620px;margin:0 auto 50px">
+      <span style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#E3A828">The People</span>
+      <h2 style="font-family:'Playfair Display',serif;font-weight:700;font-size:38px;color:#2C2C2C;margin:12px 0 0">Meet our team</h2>
+    </div>
+    <div class="mc-team" style="display:grid;grid-template-columns:repeat(4,1fr);gap:26px">
+      <sc-for list="{{ team }}" as="m" hint-placeholder-count="4">
+        <div style="background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 2px 8px rgba(0,0,0,0.06)">
+          <div style="height:240px;background:#0F4C75 center/cover;background-image:{{ m.bg }}"></div>
+          <div style="padding:22px 22px 26px">
+            <h3 style="font-family:'Playfair Display',serif;font-weight:600;font-size:20px;color:#2C2C2C;margin:0 0 3px">{{ m.name }}</h3>
+            <div style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:12.5px;letter-spacing:0.5px;text-transform:uppercase;color:#1B7A5C;margin-bottom:11px">{{ m.role }}</div>
+            <p style="font-size:13.5px;line-height:1.6;color:#6B6B6B;margin:0">{{ m.bio }}</p>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </section>
+
+  <!-- CERTS -->
+  <section style="background:#F0EADC">
+    <div class="mc-section" style="max-width:1180px;margin:0 auto;padding:64px 32px;text-align:center">
+      <p style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:12px;letter-spacing:2px;text-transform:uppercase;color:#8A8A8A;margin:0 0 28px">Trusted &amp; Recognized</p>
+      <div style="display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:40px">
+        <sc-for list="{{ certs }}" as="c" hint-placeholder-count="4">
+          <div style="display:flex;flex-direction:column;align-items:center;gap:8px;min-width:140px">
+            <div style="font-family:'Playfair Display',serif;font-weight:700;font-size:26px;color:#1B7A5C">{{ c.big }}</div>
+            <div style="font-size:12.5px;color:#6B6B6B;font-family:'Montserrat',sans-serif;text-align:center">{{ c.label }}</div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </section>
+
+  <dc-import name="Footer" hint-size="100%,420px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  renderVals(){
+    const img = id => `url('https://images.unsplash.com/${id}?auto=format&fit=crop&w=600&q=80')`;
+    return {
+      values: [
+        { icon:'✦', title:'Excellence', body:'We sweat the smallest details so you never have to think about them.' },
+        { icon:'❖', title:'Authenticity', body:'Real islands, real people — never a manufactured experience.' },
+        { icon:'🌿', title:'Sustainability', body:'We travel lightly and reinvest in the communities that host us.' },
+        { icon:'✎', title:'Personalization', body:'Every journey is shaped entirely around you.' },
+      ],
+      team: [
+        { name:'Marcus Alleyne', role:'Founder & CEO', bio:'Born in Barbados, sailing the islands since age six. The original "Mista".', bg:img('photo-1507003211169-0a1dd7228f2d') },
+        { name:'Lena Caldeira', role:'Head of Experiences', bio:'Curates every itinerary. Knows a chef on every island worth the trip.', bg:img('photo-1573496359142-b8d87734a5a2') },
+        { name:'Andre Thomas', role:'Lead Concierge', bio:'Your 24/7 point of contact, from first call to final farewell.', bg:img('photo-1500648767791-00dcc994a43e') },
+        { name:'Priya Sharma', role:'Sustainability Lead', bio:'Builds the partnerships that keep our travel giving back.', bg:img('photo-1494790108377-be9c29b29330') },
+      ],
+      certs: [
+        { big:'4.9★', label:'Across 2,000+ reviews' },
+        { big:'IATA', label:'Accredited travel agency' },
+        { big:'Top 10', label:'Caribbean Travel Awards 2025' },
+        { big:'1% ↩', label:'Of revenue to island communities' },
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

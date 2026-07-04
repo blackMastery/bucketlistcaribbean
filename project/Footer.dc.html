@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Montserrat:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+@media (max-width: 860px){ .mc-foot-grid{grid-template-columns:1fr 1fr !important;gap:36px 24px !important;} }
+@media (max-width: 540px){ .mc-foot-grid{grid-template-columns:1fr !important;} .mc-foot-bottom{flex-direction:column !important;gap:14px !important;text-align:center;} }
+</style>
+</helmet>
+<footer style="background:#0A0D0C;color:#C9CFCB;font-family:'Inter',sans-serif;border-top:1px solid rgba(227,168,40,0.22)">
+  <div style="max-width:1280px;margin:0 auto;padding:64px 32px 0">
+    <div class="mc-foot-grid" style="display:grid;grid-template-columns:1.6fr 1fr 1fr 1fr;gap:48px">
+      <div>
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:18px">
+          <div style="width:46px;height:46px;border-radius:50%;overflow:hidden;border:1.5px solid rgba(227,168,40,0.6);background:#000 center/cover;background-image:url('assets/logo-mark.png')"></div>
+          <span style="font-family:'Playfair Display',serif;font-weight:700;font-size:19px;background:linear-gradient(180deg,#F6CE5B,#C68A1E);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent">Mista Concierge</span>
+        </div>
+        <p style="font-size:14px;line-height:1.7;color:#9AA39E;max-width:320px;margin:0 0 20px">Bespoke luxury journeys across the Caribbean — from the Pitons of St. Lucia to the cays of the Bahamas, crafted by islanders who know every hidden cove.</p>
+        <div style="display:flex;gap:10px">
+          <sc-for list="{{ socials }}" as="s" hint-placeholder-count="3">
+            <a href="#" aria-label="{{ s.label }}" style="width:38px;height:38px;border-radius:8px;background:rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:center;color:#C9CFCB;text-decoration:none;font-size:13px;font-weight:600;font-family:'Montserrat',sans-serif;transition:all .18s ease" style-hover="background:#E3A828;color:#1F2A26">{{ s.icon }}</a>
+          </sc-for>
+        </div>
+      </div>
+      <div>
+        <h4 style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:#E3A828;margin:0 0 18px">Popular Tours</h4>
+        <div style="display:flex;flex-direction:column;gap:11px">
+          <sc-for list="{{ tourLinks }}" as="t" hint-placeholder-count="5">
+            <a href="Tours.dc.html" style="color:#9AA39E;text-decoration:none;font-size:14px;transition:color .15s ease" style-hover="color:#F5F1E8">{{ t }}</a>
+          </sc-for>
+        </div>
+      </div>
+      <div>
+        <h4 style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:#E3A828;margin:0 0 18px">Contact</h4>
+        <div style="display:flex;flex-direction:column;gap:11px;font-size:14px;color:#9AA39E">
+          <a href="tel:+12460000000" style="color:#9AA39E;text-decoration:none" style-hover="color:#F5F1E8">+1 246 000 0000</a>
+          <a href="mailto:hello@mistatravel.com" style="color:#9AA39E;text-decoration:none" style-hover="color:#F5F1E8">hello@mistatravel.com</a>
+          <a href="https://wa.me/12460000000" style="color:#9AA39E;text-decoration:none" style-hover="color:#F5F1E8">WhatsApp: Message us</a>
+          <span style="line-height:1.6">Hastings Main Road, Christ Church<br>Barbados, Caribbean</span>
+        </div>
+      </div>
+      <div>
+        <h4 style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:13px;letter-spacing:1.5px;text-transform:uppercase;color:#E3A828;margin:0 0 18px">Explore</h4>
+        <div style="display:flex;flex-direction:column;gap:11px">
+          <a href="Destinations.dc.html" style="color:#9AA39E;text-decoration:none;font-size:14px" style-hover="color:#F5F1E8">Destinations</a>
+          <a href="About.dc.html" style="color:#9AA39E;text-decoration:none;font-size:14px" style-hover="color:#F5F1E8">About Us</a>
+          <a href="Tours.dc.html" style="color:#9AA39E;text-decoration:none;font-size:14px" style-hover="color:#F5F1E8">All Tours</a>
+          <a href="Contact.dc.html" style="color:#9AA39E;text-decoration:none;font-size:14px" style-hover="color:#F5F1E8">Plan a Trip</a>
+        </div>
+      </div>
+    </div>
+    <div class="mc-foot-bottom" style="display:flex;align-items:center;justify-content:space-between;margin-top:56px;padding:24px 0;border-top:1px solid rgba(255,255,255,0.08);font-size:13px;color:#7C857F">
+      <span>© 2026 Mista Concierge Travel. All rights reserved.</span>
+      <div style="display:flex;gap:24px">
+        <a href="#" style="color:#7C857F;text-decoration:none" style-hover="color:#C9CFCB">Terms</a>
+        <a href="#" style="color:#7C857F;text-decoration:none" style-hover="color:#C9CFCB">Privacy</a>
+        <a href="#" style="color:#7C857F;text-decoration:none" style-hover="color:#C9CFCB">Sitemap</a>
+      </div>
+    </div>
+  </div>
+</footer>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;$preview&quot;:{&quot;width&quot;:1280,&quot;height&quot;:420}}">
+class Component extends DCLogic {
+  renderVals() {
+    return {
+      socials: [
+        { label: 'Instagram', icon: 'IG' },
+        { label: 'Facebook', icon: 'FB' },
+        { label: 'TripAdvisor', icon: 'TA' },
+      ],
+      tourLinks: [
+        'St. Lucia Piton Escape',
+        'Barbados Platinum Coast',
+        'Grenadines Catamaran Voyage',
+        'Bahamas Out Islands Hideaway',
+        'Jamaica Reggae & Reef',
+      ],
+    };
+  }
+}
+</script>
+</body>
+</html>

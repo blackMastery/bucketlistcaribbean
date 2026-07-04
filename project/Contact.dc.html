@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Montserrat:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  body{margin:0;background:#F5F1E8;}
+  @media (max-width:920px){ .mc-contact-grid{grid-template-columns:1fr !important;} }
+  @media (max-width:600px){ .mc-contact-hero h1{font-size:34px !important;} .mc-section{padding:48px 22px !important;} .mc-form-row{grid-template-columns:1fr !important;} }
+</style>
+</helmet>
+<div style="font-family:'Inter',sans-serif;background:#F5F1E8;color:#2C2C2C">
+  <dc-import name="Header" active="contact" hint-size="100%,76px"></dc-import>
+
+  <!-- HERO -->
+  <section class="mc-contact-hero" style="position:relative;min-height:340px;display:flex;align-items:center;padding:80px 32px;background:#0F4C75;background-image:linear-gradient(120deg,rgba(15,42,58,0.82),rgba(27,122,92,0.5)),url('https://images.unsplash.com/photo-1505228395891-9a51e7e86bf6?auto=format&fit=crop&w=2000&q=80');background-size:cover;background-position:center">
+    <div style="max-width:1280px;margin:0 auto;width:100%">
+      <span style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#E3A828">Contact Us</span>
+      <h1 style="font-family:'Playfair Display',serif;font-weight:700;font-size:46px;color:#F5F1E8;margin:12px 0 10px;line-height:1.1">Let's plan your escape</h1>
+      <p style="font-size:16px;color:rgba(245,241,232,0.9);margin:0;max-width:520px;line-height:1.6">Tell us your dream and our concierge team will design it. We respond within 24 hours.</p>
+    </div>
+  </section>
+
+  <section class="mc-section" style="max-width:1180px;margin:0 auto;padding:72px 32px 84px">
+    <div class="mc-contact-grid" style="display:grid;grid-template-columns:1.3fr 1fr;gap:48px;align-items:start">
+
+      <!-- FORM -->
+      <div style="background:#fff;border-radius:18px;padding:40px;box-shadow:0 8px 32px rgba(0,0,0,0.06)">
+        <sc-if value="{{ notSent }}" hint-placeholder-val="{{ true }}">
+          <div>
+            <h2 style="font-family:'Playfair Display',serif;font-weight:600;font-size:26px;color:#2C2C2C;margin:0 0 6px">Send us a message</h2>
+            <p style="font-size:14px;color:#8A8A8A;margin:0 0 28px">Fields marked with <span style="color:#FF6B5B">*</span> are required.</p>
+            <form onSubmit="{{ submit }}" novalidate="{{ true }}">
+              <div class="mc-form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px">
+                <div>
+                  <label style="display:block;font-family:'Montserrat',sans-serif;font-weight:600;font-size:12.5px;color:#4A4A4A;margin-bottom:7px">Full name <span style="color:#FF6B5B">*</span></label>
+                  <input value="{{ f.name }}" onChange="{{ onName }}" placeholder="Jane Traveler" style="{{ nameStyle }}" style-focus="border-color:#1B7A5C"/>
+                  <sc-if value="{{ err.name }}" hint-placeholder-val="{{ false }}"><div style="font-size:12px;color:#C0524A;margin-top:5px">Please enter your name</div></sc-if>
+                </div>
+                <div>
+                  <label style="display:block;font-family:'Montserrat',sans-serif;font-weight:600;font-size:12.5px;color:#4A4A4A;margin-bottom:7px">Email <span style="color:#FF6B5B">*</span></label>
+                  <input value="{{ f.email }}" onChange="{{ onEmail }}" placeholder="you@email.com" style="{{ emailStyle }}" style-focus="border-color:#1B7A5C"/>
+                  <sc-if value="{{ err.email }}" hint-placeholder-val="{{ false }}"><div style="font-size:12px;color:#C0524A;margin-top:5px">Enter a valid email address</div></sc-if>
+                </div>
+              </div>
+              <div class="mc-form-row" style="display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px">
+                <div>
+                  <label style="display:block;font-family:'Montserrat',sans-serif;font-weight:600;font-size:12.5px;color:#4A4A4A;margin-bottom:7px">Phone</label>
+                  <input value="{{ f.phone }}" onChange="{{ onPhone }}" placeholder="+1 (000) 000-0000" style="{{ baseInput }}" style-focus="border-color:#1B7A5C"/>
+                </div>
+                <div>
+                  <label style="display:block;font-family:'Montserrat',sans-serif;font-weight:600;font-size:12.5px;color:#4A4A4A;margin-bottom:7px">Tour interest</label>
+                  <select value="{{ f.interest }}" onChange="{{ onInterest }}" style="{{ baseInput }}">
+                    <option value="">Select a destination…</option>
+                    <sc-for list="{{ interests }}" as="i" hint-placeholder-count="6">
+                      <option value="{{ i }}">{{ i }}</option>
+                    </sc-for>
+                  </select>
+                </div>
+              </div>
+              <div style="margin-bottom:24px">
+                <label style="display:block;font-family:'Montserrat',sans-serif;font-weight:600;font-size:12.5px;color:#4A4A4A;margin-bottom:7px">Message <span style="color:#FF6B5B">*</span></label>
+                <textarea value="{{ f.message }}" onChange="{{ onMessage }}" placeholder="Tell us about your dream trip — when, who's travelling, and what you love…" rows="5" style="{{ messageStyle }}" style-focus="border-color:#1B7A5C"></textarea>
+                <sc-if value="{{ err.message }}" hint-placeholder-val="{{ false }}"><div style="font-size:12px;color:#C0524A;margin-top:5px">Please add a short message</div></sc-if>
+              </div>
+              <button type="submit" style="width:100%;font-family:'Montserrat',sans-serif;font-weight:600;font-size:16px;color:#F5F1E8;background:#1B7A5C;border:none;padding:16px;border-radius:8px;cursor:pointer;transition:all .18s ease;box-shadow:0 6px 20px rgba(27,122,92,0.3)" style-hover="background:#15543F;transform:translateY(-1px)">Send Message</button>
+              <p style="text-align:center;font-size:13px;color:#8A8A8A;margin:16px 0 0">We'll respond within 24 hours.</p>
+            </form>
+          </div>
+        </sc-if>
+        <sc-if value="{{ sent }}" hint-placeholder-val="{{ false }}">
+          <div style="text-align:center;padding:40px 10px">
+            <div style="width:72px;height:72px;border-radius:50%;background:rgba(27,122,92,0.12);color:#1B7A5C;display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 20px">✓</div>
+            <h2 style="font-family:'Playfair Display',serif;font-weight:600;font-size:28px;color:#2C2C2C;margin:0 0 10px">Message sent!</h2>
+            <p style="font-size:15px;line-height:1.6;color:#6B6B6B;margin:0 0 24px;max-width:380px;margin-left:auto;margin-right:auto">Thank you, {{ sentName }}. A concierge will be in touch within 24 hours to start shaping your journey.</p>
+            <button onClick="{{ reset }}" style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:14px;color:#1B7A5C;background:transparent;border:2px solid #E3A828;padding:12px 28px;border-radius:8px;cursor:pointer">Send Another Message</button>
+          </div>
+        </sc-if>
+      </div>
+
+      <!-- INFO -->
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div style="background:#fff;border-radius:16px;padding:30px;box-shadow:0 2px 8px rgba(0,0,0,0.05)">
+          <h3 style="font-family:'Playfair Display',serif;font-weight:600;font-size:22px;color:#2C2C2C;margin:0 0 20px">Get in touch</h3>
+          <div style="display:flex;flex-direction:column;gap:18px">
+            <sc-for list="{{ contacts }}" as="c" hint-placeholder-count="4">
+              <a href="{{ c.href }}" style="display:flex;align-items:flex-start;gap:14px;text-decoration:none">
+                <span style="flex-shrink:0;width:42px;height:42px;border-radius:10px;background:#F0EADC;display:flex;align-items:center;justify-content:center;font-size:17px">{{ c.icon }}</span>
+                <span>
+                  <span style="display:block;font-family:'Montserrat',sans-serif;font-weight:600;font-size:12px;letter-spacing:0.5px;text-transform:uppercase;color:#8A8A8A;margin-bottom:3px">{{ c.label }}</span>
+                  <span style="display:block;font-size:15px;color:#2C2C2C">{{ c.value }}</span>
+                </span>
+              </a>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="background:#1B7A5C;background-image:linear-gradient(140deg,#1B7A5C,#15543F);border-radius:16px;padding:26px 30px;color:#F5F1E8">
+          <h4 style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:14px;letter-spacing:0.5px;margin:0 0 10px">Hours of operation</h4>
+          <div style="font-size:14px;line-height:1.9;color:rgba(245,241,232,0.9)">
+            Mon–Fri · 8:00 AM – 7:00 PM<br>
+            Saturday · 9:00 AM – 4:00 PM<br>
+            Sunday · By appointment
+          </div>
+          <div style="display:flex;gap:10px;margin-top:20px">
+            <sc-for list="{{ socials }}" as="s" hint-placeholder-count="3">
+              <a href="#" aria-label="{{ s }}" style="width:40px;height:40px;border-radius:10px;background:rgba(245,241,232,0.12);display:flex;align-items:center;justify-content:center;color:#F5F1E8;text-decoration:none;font-family:'Montserrat',sans-serif;font-weight:600;font-size:12px;transition:background .18s ease" style-hover="background:#E3A828">{{ s }}</a>
+            </sc-for>
+          </div>
+        </div>
+
+        <div style="border-radius:16px;overflow:hidden;height:200px;position:relative;background:#0F4C75 center/cover;background-image:url('https://images.unsplash.com/photo-1524813686514-a57563d77965?auto=format&fit=crop&w=900&q=80');box-shadow:0 2px 8px rgba(0,0,0,0.05)">
+          <div style="position:absolute;inset:0;background:linear-gradient(180deg,rgba(15,42,58,0.1),rgba(15,42,58,0.55))"></div>
+          <div style="position:absolute;left:18px;bottom:16px;display:flex;align-items:center;gap:10px;color:#F5F1E8">
+            <span style="width:34px;height:34px;border-radius:50%;background:#E3A828;color:#0F4C75;display:flex;align-items:center;justify-content:center;font-size:16px">◉</span>
+            <span style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:14px">Hastings, Christ Church · Barbados</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <dc-import name="Footer" hint-size="100%,420px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { f:{ name:'', email:'', phone:'', interest:'', message:'' }, err:{}, sent:false, sentName:'' };
+  set(field, val){ this.setState(s => ({ f:{...s.f, [field]:val}, err:{...s.err, [field]:false} })); }
+  validate(){
+    const { name, email, message } = this.state.f;
+    const err = {};
+    if(!name.trim()) err.name = true;
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email.trim())) err.email = true;
+    if(!message.trim()) err.message = true;
+    return err;
+  }
+  renderVals(){
+    const s = this.state;
+    const base = "width:100%;border:1.5px solid rgba(44,44,44,0.15);border-radius:8px;padding:12px 14px;font-family:'Inter',sans-serif;font-size:14px;color:#2C2C2C;outline:none;background:#fff;";
+    const errBorder = "width:100%;border:1.5px solid #E0857E;border-radius:8px;padding:12px 14px;font-family:'Inter',sans-serif;font-size:14px;color:#2C2C2C;outline:none;background:#FDF6F5;";
+    const ta = base + "resize:vertical;min-height:120px;line-height:1.5;";
+    const taErr = errBorder + "resize:vertical;min-height:120px;line-height:1.5;";
+    return {
+      f: s.f, err: s.err,
+      baseInput: base,
+      nameStyle: s.err.name ? errBorder : base,
+      emailStyle: s.err.email ? errBorder : base,
+      messageStyle: s.err.message ? taErr : ta,
+      onName:(e)=>this.set('name', e.target.value),
+      onEmail:(e)=>this.set('email', e.target.value),
+      onPhone:(e)=>this.set('phone', e.target.value),
+      onInterest:(e)=>this.set('interest', e.target.value),
+      onMessage:(e)=>this.set('message', e.target.value),
+      interests:['St. Lucia','Barbados','Jamaica','The Bahamas','Turks & Caicos','Grenada','Not sure yet — surprise me'],
+      submit:(e)=>{
+        e.preventDefault();
+        const err = this.validate();
+        if(Object.keys(err).length){ this.setState({ err }); return; }
+        this.setState({ sent:true, sentName:this.state.f.name.trim().split(' ')[0] });
+      },
+      notSent:!s.sent, sent:s.sent, sentName:s.sentName,
+      reset:()=>this.setState({ f:{ name:'', email:'', phone:'', interest:'', message:'' }, err:{}, sent:false }),
+      contacts:[
+        { icon:'☎', label:'Phone', value:'+1 246 000 0000', href:'tel:+12460000000' },
+        { icon:'✉', label:'Email', value:'hello@mistatravel.com', href:'mailto:hello@mistatravel.com' },
+        { icon:'WA', label:'WhatsApp', value:'Message us anytime', href:'https://wa.me/12460000000' },
+        { icon:'◉', label:'Office', value:'Hastings Main Road, Christ Church, Barbados', href:'#' },
+      ],
+      socials:['IG','FB','TA'],
+    };
+  }
+}
+</script>
+</body>
+</html>

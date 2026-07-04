@@ -1,0 +1,164 @@
+@import "tailwindcss";
+
+@theme {
+  /* Brand palette — extracted from the design prototypes */
+  --color-sand: #f5f1e8;
+  --color-cream: #f0eadc;
+  --color-cream-deep: #ede6d4;
+  --color-green: #1b7a5c;
+  --color-green-dark: #15543f;
+  --color-gold: #e3a828;
+  --color-gold-light: #f6ce5b;
+  --color-gold-deep: #c68a1e;
+  --color-blue: #0f4c75;
+  --color-blue-deep: #0f2a3a;
+  --color-night: #06090a;
+  --color-night-soft: #0a0d0c;
+  --color-ink: #2c2c2c;
+  --color-ink-soft: #4a4a4a;
+  --color-muted: #6b6b6b;
+  --color-muted-light: #8a8a8a;
+  --color-coral: #ff6b5b;
+
+  /* Type families — values come from next/font CSS variables */
+  --font-serif: var(--font-playfair), Georgia, serif;
+  --font-sans: var(--font-montserrat), system-ui, sans-serif;
+  --font-body: var(--font-inter), system-ui, sans-serif;
+
+  /* Animations used across the prototypes */
+  --animate-fade-up: mcFadeUp 0.6s ease both;
+  --animate-pulse-glow: mcPulse 2.6s ease-in-out infinite;
+  --animate-toast-in: mcToastIn 0.4s ease both;
+  --animate-fade-in: mcFadeIn 0.3s ease both;
+}
+
+@keyframes mcFadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes mcPulse {
+  0%,
+  100% {
+    box-shadow: 0 6px 20px rgba(27, 122, 92, 0.35);
+  }
+  50% {
+    box-shadow: 0 6px 28px rgba(27, 122, 92, 0.6);
+  }
+}
+@keyframes mcToastIn {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes mcFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+  /* Prevent iOS/Safari from auto-inflating text in landscape. */
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+/* Cleaner taps on touch devices — no grey flash on press. */
+a,
+button,
+input,
+select,
+textarea,
+label,
+[role="button"] {
+  -webkit-tap-highlight-color: transparent;
+}
+
+/*
+ * Mobile form controls must be >=16px or iOS Safari zooms in on focus.
+ * Unlayered (so it wins over Tailwind's text-[14px] utilities) and scoped
+ * to small screens so the desktop type scale is untouched. Range sliders
+ * carry no text, so they're excluded.
+ */
+@media (max-width: 640px) {
+  input:not([type="range"]),
+  select,
+  textarea {
+    font-size: 16px;
+  }
+}
+
+body {
+  margin: 0;
+  background: var(--color-sand);
+  color: var(--color-ink);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Gold gradient text used by the logo wordmark */
+.text-gold-gradient {
+  background: linear-gradient(180deg, #f6ce5b 10%, #c68a1e 95%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent;
+}
+
+/* Range slider styling (Tours price filter) */
+input[type="range"].mc-range {
+  -webkit-appearance: none;
+  appearance: none;
+  height: 5px;
+  border-radius: 5px;
+  background: #d9d2c2;
+  outline: none;
+}
+input[type="range"].mc-range::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #1b7a5c;
+  border: 2px solid #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+}
+input[type="range"].mc-range::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #1b7a5c;
+  border: 2px solid #fff;
+  cursor: pointer;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Montserrat:wght@400;500;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  *{box-sizing:border-box;}
+  body{margin:0;background:#F5F1E8;}
+  input[type=range].mc-range{-webkit-appearance:none;appearance:none;height:5px;border-radius:5px;background:#D9D2C2;outline:none;}
+  input[type=range].mc-range::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:#1B7A5C;border:2px solid #fff;box-shadow:0 1px 4px rgba(0,0,0,0.25);cursor:pointer;}
+  input[type=range].mc-range::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:#1B7A5C;border:2px solid #fff;cursor:pointer;}
+  .mc-filter-toggle{display:none;}
+  @media (max-width:900px){
+    .mc-tours-layout{grid-template-columns:1fr !important;}
+    .mc-sidebar{display:none;}
+    .mc-sidebar.mc-open{display:block;}
+    .mc-filter-toggle{display:inline-flex !important;}
+    .mc-tour-grid{grid-template-columns:1fr 1fr !important;}
+  }
+  @media (max-width:600px){ .mc-tour-grid{grid-template-columns:1fr !important;} .mc-toolbar{flex-direction:column !important;align-items:flex-start !important;gap:14px !important;} }
+</style>
+</helmet>
+<div style="font-family:'Inter',sans-serif;background:#F5F1E8;color:#2C2C2C;min-height:100vh">
+  <dc-import name="Header" active="tours" hint-size="100%,76px"></dc-import>
+
+  <!-- PAGE HEADER -->
+  <section style="background:#0F4C75;background-image:linear-gradient(120deg,rgba(15,42,58,0.74),rgba(15,76,117,0.62)),url('https://images.unsplash.com/photo-1473116763249-2faaef81ccda?auto=format&fit=crop&w=2000&q=80');background-size:cover;background-position:center;padding:64px 32px">
+    <div style="max-width:1280px;margin:0 auto">
+      <span style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:13px;letter-spacing:2px;text-transform:uppercase;color:#E3A828">Tours &amp; Experiences</span>
+      <h1 style="font-family:'Playfair Display',serif;font-weight:700;font-size:46px;color:#F5F1E8;margin:10px 0 8px;line-height:1.1">All Tours &amp; Experiences</h1>
+      <p style="font-size:16px;color:rgba(245,241,232,0.88);margin:0;max-width:560px">Handcrafted journeys across the Caribbean's most beautiful islands. Filter to find the escape that fits you.</p>
+    </div>
+  </section>
+
+  <div style="max-width:1280px;margin:0 auto;padding:36px 32px 80px">
+    <button class="mc-filter-toggle" onClick="{{ toggleFilters }}" style="align-items:center;gap:8px;font-family:'Montserrat',sans-serif;font-weight:600;font-size:14px;color:#1B7A5C;background:#fff;border:1px solid rgba(44,44,44,0.12);padding:11px 18px;border-radius:8px;cursor:pointer;margin-bottom:18px">☰ Filters</button>
+
+    <div class="mc-tours-layout" style="display:grid;grid-template-columns:280px 1fr;gap:34px;align-items:start">
+
+      <!-- SIDEBAR -->
+      <aside class="mc-sidebar {{ sidebarClass }}" style="background:#fff;border-radius:14px;padding:26px 24px;box-shadow:0 2px 8px rgba(0,0,0,0.05);position:sticky;top:96px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px">
+          <h3 style="font-family:'Montserrat',sans-serif;font-weight:700;font-size:16px;color:#2C2C2C;margin:0">Filters</h3>
+          <button onClick="{{ resetFilters }}" style="background:transparent;border:none;color:#1B7A5C;font-family:'Montserrat',sans-serif;font-weight:600;font-size:12.5px;cursor:pointer">Reset</button>
+        </div>
+
+        <div style="margin-bottom:24px">
+          <h4 style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#8A8A8A;margin:0 0 12px">Destination</h4>
+          <sc-for list="{{ destOptions }}" as="o" hint-placeholder-count="6">
+            <label style="display:flex;align-items:center;gap:10px;padding:5px 0;cursor:pointer;font-size:14px;color:#2C2C2C">
+              <input type="checkbox" checked="{{ o.checked }}" onChange="{{ o.onChange }}" style="width:17px;height:17px;accent-color:#1B7A5C;cursor:pointer"/>
+              <span style="flex:1">{{ o.label }}</span>
+              <span style="font-size:12px;color:#A8A8A8">{{ o.count }}</span>
+            </label>
+          </sc-for>
+        </div>
+
+        <div style="margin-bottom:24px">
+          <h4 style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#8A8A8A;margin:0 0 14px">Max Price</h4>
+          <input type="range" class="mc-range" min="900" max="5500" step="100" value="{{ maxPrice }}" onChange="{{ onPrice }}" style="width:100%"/>
+          <div style="display:flex;justify-content:space-between;margin-top:8px;font-size:13px;color:#6B6B6B">
+            <span>$900</span>
+            <span style="font-weight:600;color:#1B7A5C">Up to {{ maxPriceLabel }}</span>
+          </div>
+        </div>
+
+        <div style="margin-bottom:24px">
+          <h4 style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#8A8A8A;margin:0 0 12px">Duration</h4>
+          <sc-for list="{{ durOptions }}" as="o" hint-placeholder-count="4">
+            <label style="display:flex;align-items:center;gap:10px;padding:5px 0;cursor:pointer;font-size:14px;color:#2C2C2C">
+              <input type="radio" name="mc-dur" checked="{{ o.checked }}" onChange="{{ o.onChange }}" style="width:16px;height:16px;accent-color:#1B7A5C;cursor:pointer"/>
+              <span>{{ o.label }}</span>
+            </label>
+          </sc-for>
+        </div>
+
+        <div style="margin-bottom:24px">
+          <h4 style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#8A8A8A;margin:0 0 12px">Activity Type</h4>
+          <sc-for list="{{ actOptions }}" as="o" hint-placeholder-count="4">
+            <label style="display:flex;align-items:center;gap:10px;padding:5px 0;cursor:pointer;font-size:14px;color:#2C2C2C">
+              <input type="checkbox" checked="{{ o.checked }}" onChange="{{ o.onChange }}" style="width:17px;height:17px;accent-color:#1B7A5C;cursor:pointer"/>
+              <span>{{ o.label }}</span>
+            </label>
+          </sc-for>
+        </div>
+
+        <div>
+          <h4 style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:12px;letter-spacing:1px;text-transform:uppercase;color:#8A8A8A;margin:0 0 12px">Rating</h4>
+          <sc-for list="{{ ratingOptions }}" as="o" hint-placeholder-count="3">
+            <label style="display:flex;align-items:center;gap:10px;padding:5px 0;cursor:pointer;font-size:14px;color:#2C2C2C">
+              <input type="radio" name="mc-rate" checked="{{ o.checked }}" onChange="{{ o.onChange }}" style="width:16px;height:16px;accent-color:#1B7A5C;cursor:pointer"/>
+              <span>{{ o.label }}</span>
+            </label>
+          </sc-for>
+        </div>
+      </aside>
+
+      <!-- MAIN -->
+      <div>
+        <div class="mc-toolbar" style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
+          <p style="font-size:14.5px;color:#6B6B6B;margin:0"><strong style="color:#2C2C2C;font-weight:600">{{ resultCount }}</strong> experiences found</p>
+          <div style="display:flex;align-items:center;gap:10px">
+            <span style="font-size:13px;color:#8A8A8A;font-family:'Montserrat',sans-serif">Sort by</span>
+            <select value="{{ sort }}" onChange="{{ onSort }}" style="font-family:'Montserrat',sans-serif;font-weight:500;font-size:13.5px;color:#2C2C2C;border:1px solid rgba(44,44,44,0.15);border-radius:8px;padding:9px 14px;background:#fff;cursor:pointer;outline:none">
+              <option value="popular">Most Popular</option>
+              <option value="newest">Newest</option>
+              <option value="price-low">Price: Low to High</option>
+              <option value="price-high">Price: High to Low</option>
+              <option value="rating">Highest Rated</option>
+            </select>
+          </div>
+        </div>
+
+        <sc-if value="{{ hasResults }}" hint-placeholder-val="{{ true }}">
+          <div class="mc-tour-grid" style="display:grid;grid-template-columns:repeat(3,1fr);gap:26px">
+            <sc-for list="{{ tours }}" as="t" hint-placeholder-count="6">
+              <dc-import name="TourCard" image="{{ t.image }}" title="{{ t.title }}" location="{{ t.location }}" price="{{ t.price }}" rating="{{ t.rating }}" reviews="{{ t.reviews }}" duration="{{ t.duration }}" badge="{{ t.badge }}" badge-color="{{ t.badgeColor }}" hint-size="100%,480px"></dc-import>
+            </sc-for>
+          </div>
+        </sc-if>
+        <sc-if value="{{ noResults }}" hint-placeholder-val="{{ false }}">
+          <div style="background:#fff;border-radius:14px;padding:60px 30px;text-align:center;box-shadow:0 2px 8px rgba(0,0,0,0.05)">
+            <div style="font-size:40px;margin-bottom:14px">🧭</div>
+            <h3 style="font-family:'Playfair Display',serif;font-weight:600;font-size:24px;color:#2C2C2C;margin:0 0 8px">No tours match your filters</h3>
+            <p style="font-size:15px;color:#6B6B6B;margin:0 0 22px">Try widening your price range or clearing a filter.</p>
+            <button onClick="{{ resetFilters }}" style="font-family:'Montserrat',sans-serif;font-weight:600;font-size:14px;color:#fff;background:#1B7A5C;border:none;padding:12px 28px;border-radius:8px;cursor:pointer">Reset Filters</button>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </div>
+
+  <dc-import name="Footer" hint-size="100%,420px"></dc-import>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  constructor(props){
+    super(props);
+    this.ALL = [
+      { id:12, title:'St. Lucia Piton Luxury Escape', location:'Soufrière, St. Lucia', dest:'St. Lucia', price:2980, rating:5.0, reviews:142, days:5, duration:'5 days · 4 nights', acts:['Luxury','Beach & Spa'], badge:'Bestseller', badgeColor:'#FF6B5B', image:'https://images.unsplash.com/photo-1473116763249-2faaef81ccda?auto=format&fit=crop&w=900&q=80' },
+      { id:11, title:'Barbados Platinum Coast Retreat', location:'West Coast, Barbados', dest:'Barbados', price:3450, rating:4.9, reviews:88, days:6, duration:'6 days · 5 nights', acts:['Luxury','Beach & Spa'], badge:'Recommended', badgeColor:'#1B7A5C', image:'https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=900&q=80' },
+      { id:10, title:'Grenadines Catamaran Voyage', location:'The Grenadines', dest:'Grenada', price:4200, rating:5.0, reviews:54, days:7, duration:'7 days · 6 nights', acts:['Luxury','Adventure'], badge:'Limited spots', badgeColor:'#E3A828', image:'https://images.unsplash.com/photo-1468413253725-0d5181091126?auto=format&fit=crop&w=900&q=80' },
+      { id:9, title:'Jamaica Reggae & Reef', location:'Montego Bay, Jamaica', dest:'Jamaica', price:1980, rating:4.8, reviews:96, days:4, duration:'4 days · 3 nights', acts:['Culture','Beach & Spa'], badge:'', badgeColor:'#1B7A5C', image:'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=80' },
+      { id:8, title:'Bahamas Out Islands Hideaway', location:'Exuma, Bahamas', dest:'Bahamas', price:2650, rating:4.9, reviews:61, days:5, duration:'5 days · 4 nights', acts:['Beach & Spa','Luxury'], badge:'', badgeColor:'#1B7A5C', image:'https://images.unsplash.com/photo-1505228395891-9a51e7e86bf6?auto=format&fit=crop&w=900&q=80' },
+      { id:7, title:'Turks & Caicos Diving Expedition', location:'Providenciales', dest:'Turks & Caicos', price:2380, rating:4.8, reviews:47, days:4, duration:'4 days · 3 nights', acts:['Adventure','Beach & Spa'], badge:'Recommended', badgeColor:'#1B7A5C', image:'https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=900&q=80' },
+      { id:6, title:'St. Lucia Rainforest & Volcano', location:'Soufrière, St. Lucia', dest:'St. Lucia', price:1750, rating:4.7, reviews:39, days:3, duration:'3 days · 2 nights', acts:['Adventure'], badge:'', badgeColor:'#1B7A5C', image:'https://images.unsplash.com/photo-1502209524164-acea936639a2?auto=format&fit=crop&w=900&q=80' },
+      { id:5, title:'Jamaica Blue Mountains Coffee Trail', location:'Blue Mountains, Jamaica', dest:'Jamaica', price:1280, rating:4.6, reviews:33, days:2, duration:'2 days · 1 night', acts:['Culture','Adventure'], badge:'', badgeColor:'#1B7A5C', image:'https://images.unsplash.com/photo-1506929562872-bb421503ef21?auto=format&fit=crop&w=900&q=80' },
+      { id:4, title:'Barbados Rum & Heritage Journey', location:'Bridgetown, Barbados', dest:'Barbados', price:1150, rating:4.7, reviews:44, days:3, duration:'3 days · 2 nights', acts:['Culture'], badge:'', badgeColor:'#1B7A5C', image:'https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=900&q=80' },
+      { id:3, title:'Grenada Spice Island Discovery', location:"St. George's, Grenada", dest:'Grenada', price:1680, rating:4.8, reviews:36, days:4, duration:'4 days · 3 nights', acts:['Culture','Adventure'], badge:'', badgeColor:'#1B7A5C', image:'https://images.unsplash.com/photo-1473116763249-2faaef81ccda?auto=format&fit=crop&w=900&q=80' },
+      { id:2, title:'Bahamas Swimming Pigs & Cays', location:'Exuma, Bahamas', dest:'Bahamas', price:1920, rating:4.8, reviews:52, days:3, duration:'3 days · 2 nights', acts:['Adventure','Beach & Spa'], badge:'', badgeColor:'#1B7A5C', image:'https://images.unsplash.com/photo-1468413253725-0d5181091126?auto=format&fit=crop&w=900&q=80' },
+      { id:1, title:'Turks & Caicos Private Villa Week', location:'Grace Bay', dest:'Turks & Caicos', price:5400, rating:5.0, reviews:28, days:7, duration:'7 days · 6 nights', acts:['Luxury','Beach & Spa'], badge:'Limited spots', badgeColor:'#E3A828', image:'https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=80' },
+    ];
+    this.DEST = ['St. Lucia','Barbados','Jamaica','Bahamas','Turks & Caicos','Grenada'];
+    this.ACT = ['Beach & Spa','Adventure','Luxury','Culture'];
+    this.state = { dests:{}, acts:{}, maxPrice:5500, dur:'any', minRating:0, sort:'popular', sidebarOpen:false };
+  }
+  toggleSet(key, val){
+    this.setState(s => { const next={...s[key]}; next[val]=!next[val]; return { [key]: next }; });
+  }
+  filtered(){
+    const { dests, acts, maxPrice, dur, minRating } = this.state;
+    const dSel = Object.keys(dests).filter(k=>dests[k]);
+    const aSel = Object.keys(acts).filter(k=>acts[k]);
+    return this.ALL.filter(t => {
+      if (dSel.length && !dSel.includes(t.dest)) return false;
+      if (aSel.length && !t.acts.some(a=>aSel.includes(a))) return false;
+      if (t.price > maxPrice) return false;
+      if (dur==='1-3' && !(t.days>=1 && t.days<=3)) return false;
+      if (dur==='4-7' && !(t.days>=4 && t.days<=7)) return false;
+      if (dur==='8+' && !(t.days>=8)) return false;
+      if (t.rating < minRating) return false;
+      return true;
+    });
+  }
+  renderVals(){
+    const s = this.state;
+    let list = this.filtered();
+    const sorters = {
+      'popular': (a,b)=>b.reviews-a.reviews,
+      'newest': (a,b)=>b.id-a.id,
+      'price-low': (a,b)=>a.price-b.price,
+      'price-high': (a,b)=>b.price-a.price,
+      'rating': (a,b)=>b.rating-a.rating,
+    };
+    list = [...list].sort(sorters[s.sort]||sorters.popular);
+    const fmt = n => '$'+n.toLocaleString();
+    const tours = list.map(t => ({ ...t, price: fmt(t.price) }));
+    const destOptions = this.DEST.map(d => ({
+      label:d, checked:!!s.dests[d], count:this.ALL.filter(t=>t.dest===d).length,
+      onChange:()=>this.toggleSet('dests',d),
+    }));
+    const actOptions = this.ACT.map(a => ({ label:a, checked:!!s.acts[a], onChange:()=>this.toggleSet('acts',a) }));
+    const durOptions = [
+      {label:'Any duration',val:'any'},{label:'1–3 days',val:'1-3'},{label:'4–7 days',val:'4-7'},{label:'8+ days',val:'8+'},
+    ].map(o=>({ label:o.label, checked:s.dur===o.val, onChange:()=>this.setState({dur:o.val}) }));
+    const ratingOptions = [
+      {label:'Any rating',val:0},{label:'4.5 ★ & up',val:4.5},{label:'4.8 ★ & up',val:4.8},
+    ].map(o=>({ label:o.label, checked:s.minRating===o.val, onChange:()=>this.setState({minRating:o.val}) }));
+    return {
+      destOptions, actOptions, durOptions, ratingOptions,
+      maxPrice:s.maxPrice, maxPriceLabel:fmt(s.maxPrice),
+      onPrice:(e)=>this.setState({maxPrice:Number(e.target.value)}),
+      sort:s.sort, onSort:(e)=>this.setState({sort:e.target.value}),
+      tours, resultCount:tours.length, hasResults:tours.length>0, noResults:tours.length===0,
+      resetFilters:()=>this.setState({dests:{},acts:{},maxPrice:5500,dur:'any',minRating:0}),
+      sidebarClass:s.sidebarOpen?'mc-open':'',
+      toggleFilters:()=>this.setState(st=>({sidebarOpen:!st.sidebarOpen})),
+    };
+  }
+}
+</script>
+</body>
+</html>
