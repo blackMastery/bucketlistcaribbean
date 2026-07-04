@@ -254,30 +254,6 @@ export async function deleteAccount(): Promise<AccountActionResult> {
   redirect("/");
 }
 
-export async function sendAdminBookingMessage(input: {
-  bookingId: string;
-  userId: string;
-  body: string;
-}): Promise<AccountActionResult> {
-  const parsed = bookingMessageSchema.safeParse({
-    bookingId: input.bookingId,
-    body: input.body,
-  });
-  if (!parsed.success) return { ok: false, error: firstZodError(parsed.error) };
-
-  const supabase = await createClient();
-  const { error } = await supabase.from("booking_messages").insert({
-    booking_id: parsed.data.bookingId,
-    user_id: input.userId,
-    sender_role: "admin",
-    body: parsed.data.body,
-  });
-  if (error) return { ok: false, error: error.message };
-
-  revalidatePath("/admin/bookings");
-  return { ok: true };
-}
-
 export async function updateTravelerPassport(input: {
   travelerId: string;
   passportExpiry: string;

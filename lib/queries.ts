@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { createStaticClient } from "@/lib/supabase/static";
+import { getCurrentSiteId } from "@/lib/site";
 import {
   filterTours,
   sortTours,
@@ -193,11 +194,15 @@ export async function getTeam(): Promise<TeamMember[]> {
 }
 
 // Returns a key -> jsonb value map for the brand micro-content blocks.
-export async function getSiteContent(): Promise<Record<string, unknown>> {
+export async function getSiteContent(siteId?: string): Promise<Record<string, unknown>> {
   if (!hasEnv) return {};
+  const scopedSiteId = siteId ?? getCurrentSiteId();
   try {
     const supabase = createStaticClient();
-    const { data } = await supabase.from("site_content").select("key, value");
+    const { data } = await supabase
+      .from("site_content")
+      .select("key, value")
+      .eq("site_id", scopedSiteId);
     const map: Record<string, unknown> = {};
     for (const row of data ?? []) map[row.key] = row.value;
     return map;
@@ -208,13 +213,15 @@ export async function getSiteContent(): Promise<Record<string, unknown>> {
 
 // Global default payment terms (site_content key "payment_terms"). Tours with a
 // non-null payment_terms override this; null falls back to these defaults.
-export async function getDefaultPaymentTerms(): Promise<PaymentTerms | null> {
+export async function getDefaultPaymentTerms(siteId?: string): Promise<PaymentTerms | null> {
   if (!hasEnv) return null;
+  const scopedSiteId = siteId ?? getCurrentSiteId();
   try {
     const supabase = createStaticClient();
     const { data } = await supabase
       .from("site_content")
       .select("value")
+      .eq("site_id", scopedSiteId)
       .eq("key", "payment_terms")
       .maybeSingle();
     return (data?.value as PaymentTerms | undefined) ?? null;

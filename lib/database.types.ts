@@ -165,6 +165,7 @@ export type TeamMemberRow = {
 }
 
 export type SiteContentRow = {
+  site_id: string;
   key: string;
   value: Json;
   updated_at: string;

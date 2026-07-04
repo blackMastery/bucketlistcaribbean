@@ -2,8 +2,9 @@ import "server-only";
 
 import { createAdminClient, hasServiceRole } from "@/lib/supabase/admin";
 import { SITE, SITE_URL } from "@/lib/seo";
+import { getCurrentSiteId } from "@/lib/site";
 import {
-  DEFAULT_BUSINESS_CONTACT,
+  getDefaultsForSite,
   resolveBlock,
   type BusinessContact,
 } from "@/lib/site-content";
@@ -24,20 +25,22 @@ export type BookingEmailContext = {
 };
 
 export async function getEmailBrand(): Promise<EmailBrand> {
-  let contact: BusinessContact = DEFAULT_BUSINESS_CONTACT;
+  const defaults = getDefaultsForSite();
+  let contact: BusinessContact = defaults.business_contact;
   if (hasServiceRole) {
     try {
       const supabase = createAdminClient();
       const { data } = await supabase
         .from("site_content")
         .select("value")
+        .eq("site_id", getCurrentSiteId())
         .eq("key", "business_contact")
         .maybeSingle();
       if (data?.value) {
         contact = resolveBlock(
           { business_contact: data.value },
           "business_contact",
-          DEFAULT_BUSINESS_CONTACT,
+          defaults.business_contact,
         );
       }
     } catch {

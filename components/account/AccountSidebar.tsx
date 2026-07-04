@@ -13,24 +13,17 @@ const NAV: { href: string; label: string; icon: IconName }[] = [
   { href: "/account/settings", label: "Settings", icon: "pencil" },
 ];
 
-const ADMIN_ITEM: { href: string; label: string; icon: IconName } = {
-  href: "/admin",
-  label: "Admin panel",
-  icon: "shield",
-};
-
 function isActive(pathname: string, href: string) {
   if (href === "/account") return pathname === "/account";
   return pathname === href || pathname.startsWith(href + "/");
 }
 
-export function AccountSidebar({ isAdmin = false }: { isAdmin?: boolean }) {
+export function AccountSidebar() {
   const pathname = usePathname();
-  const items = isAdmin ? [...NAV, ADMIN_ITEM] : NAV;
 
   return (
     <nav className="flex flex-col gap-1">
-      {items.map((item) => {
+      {NAV.map((item) => {
         const active = isActive(pathname, item.href);
         return (
           <Link
@@ -51,13 +44,12 @@ export function AccountSidebar({ isAdmin = false }: { isAdmin?: boolean }) {
   );
 }
 
-export function AccountMobileNav({ isAdmin = false }: { isAdmin?: boolean }) {
+export function AccountMobileNav() {
   const pathname = usePathname();
-  const items = isAdmin ? [...NAV, ADMIN_ITEM] : NAV;
 
   return (
     <div className="mb-6 flex gap-2 overflow-x-auto pb-1 lg:hidden">
-      {items.map((item) => {
+      {NAV.map((item) => {
         const active = isActive(pathname, item.href);
         return (
           <Link

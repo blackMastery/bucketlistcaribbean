@@ -1,5 +1,7 @@
 // Types, defaults, and merge helpers for site_content jsonb blocks.
 
+import { getCurrentSiteSlug, type SiteSlug } from "@/lib/site";
+
 export type PageHeroContent = {
   eyebrow: string;
   headline: string;
@@ -202,6 +204,55 @@ export function resolveList<T>(
 ): T[] {
   const stored = content[key] as T[] | undefined;
   return stored?.length ? stored : defaults;
+}
+
+export type SiteContentDefaults = {
+  business_contact: BusinessContact;
+  social_links: SocialLink[];
+  footer: FooterContent;
+  contact_page: ContactPageContent;
+  about_page: AboutPageContent;
+  destinations_page: DestinationsPageContent;
+  tours_page: ToursPageContent;
+  home_featured_tours: HomeSectionContent;
+  home_why_choose: HomeSectionContent;
+  home_destinations: HomeSectionContent;
+  home_testimonials: HomeSectionContent;
+};
+
+const BUCKETLIST_FOOTER: FooterContent = {
+  ...DEFAULT_FOOTER,
+  copyright: "© 2026 Bucketlist Vacation. All rights reserved.",
+};
+
+const BUCKETLIST_HOME_WHY_CHOOSE: HomeSectionContent = {
+  eyebrow: "The Bucketlist Difference",
+  headline: "Why Choose Bucketlist Vacation",
+};
+
+const MISTA_DEFAULTS: SiteContentDefaults = {
+  business_contact: DEFAULT_BUSINESS_CONTACT,
+  social_links: DEFAULT_SOCIAL_LINKS,
+  footer: DEFAULT_FOOTER,
+  contact_page: DEFAULT_CONTACT_PAGE,
+  about_page: DEFAULT_ABOUT_PAGE,
+  destinations_page: DEFAULT_DESTINATIONS_PAGE,
+  tours_page: DEFAULT_TOURS_PAGE,
+  home_featured_tours: DEFAULT_HOME_FEATURED_TOURS,
+  home_why_choose: DEFAULT_HOME_WHY_CHOOSE,
+  home_destinations: DEFAULT_HOME_DESTINATIONS,
+  home_testimonials: DEFAULT_HOME_TESTIMONIALS,
+};
+
+const BUCKETLIST_DEFAULTS: SiteContentDefaults = {
+  ...MISTA_DEFAULTS,
+  footer: BUCKETLIST_FOOTER,
+  home_why_choose: BUCKETLIST_HOME_WHY_CHOOSE,
+};
+
+export function getDefaultsForSite(slug?: SiteSlug): SiteContentDefaults {
+  const resolved = slug ?? getCurrentSiteSlug();
+  return resolved === "bucketlist" ? BUCKETLIST_DEFAULTS : MISTA_DEFAULTS;
 }
 
 export type ContactChannel = {

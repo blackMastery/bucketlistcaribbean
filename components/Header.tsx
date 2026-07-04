@@ -51,7 +51,6 @@ export function Header() {
   const [open, setOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const [signedIn, setSignedIn] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false);
 
   useEffect(() => setMounted(true), []);
 
@@ -59,13 +58,6 @@ export function Header() {
     const supabase = createClient();
     async function sync(userId: string | undefined) {
       setSignedIn(!!userId);
-      if (!userId) return setIsAdmin(false);
-      const { data } = await supabase
-        .from("admin_users")
-        .select("is_active")
-        .eq("id", userId)
-        .maybeSingle();
-      setIsAdmin(!!data?.is_active);
     }
     supabase.auth.getUser().then(({ data }) => sync(data.user?.id));
     const { data: sub } = supabase.auth.onAuthStateChange((_e, session) =>
@@ -124,14 +116,6 @@ export function Header() {
               >
                 {accountLabel}
               </button>
-              {isAdmin && (
-                <Link
-                  href="/admin"
-                  className="border-b border-gold/15 px-2 py-3.5 font-sans text-[17px] font-semibold text-gold-light no-underline"
-                >
-                  Admin
-                </Link>
-              )}
               <Link
                 href="/contact"
                 className="mt-[18px] rounded-lg bg-gradient-to-b from-[#F2C14E] to-[#D9A526] py-3.5 text-center font-sans text-[15px] font-semibold text-[#0A0D0C] no-underline"
@@ -168,14 +152,6 @@ export function Header() {
           </nav>
 
           <div className="flex flex-shrink-0 items-center gap-3.5">
-            {isAdmin && (
-              <Link
-                href="/admin"
-                className="hidden font-sans text-[14px] font-semibold text-gold-light no-underline transition-colors hover:text-gold min-[861px]:inline"
-              >
-                Admin
-              </Link>
-            )}
             <Link
               href={accountHref}
               className="hidden font-sans text-[14px] font-medium text-[#E0DAC9] no-underline transition-colors hover:text-gold-light min-[861px]:inline"

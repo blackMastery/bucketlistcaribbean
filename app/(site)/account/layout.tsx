@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { isCurrentUserAdmin } from "@/lib/admin";
 import { SignOutButton } from "@/components/SignOutButton";
 import {
   AccountSidebar,
@@ -19,7 +18,6 @@ export default async function AccountLayout({
     data: { user },
   } = await supabase.auth.getUser();
   if (!user) redirect("/login?redirect=/account");
-  const isAdmin = await isCurrentUserAdmin();
 
   return (
     <div className="bg-sand">
@@ -34,11 +32,11 @@ export default async function AccountLayout({
           <SignOutButton />
         </div>
 
-        <AccountMobileNav isAdmin={isAdmin} />
+        <AccountMobileNav />
 
         <div className="grid grid-cols-1 gap-10 lg:grid-cols-[220px_1fr]">
           <aside className="hidden lg:block">
-            <AccountSidebar isAdmin={isAdmin} />
+            <AccountSidebar />
           </aside>
           <div>{children}</div>
         </div>
