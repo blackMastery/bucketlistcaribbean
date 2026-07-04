@@ -4,7 +4,7 @@
 import type { Metadata } from "next";
 import type { TourDetail } from "@/lib/queries";
 
-const FALLBACK_URL = "https://www.mistaconciergetravel.com";
+const FALLBACK_URL = "https://www.bucketlistcaribbean.com";
 
 // Single source of truth for the canonical base URL. Reads the env var first so
 // it can be overridden per environment; falls back to the production domain.
@@ -12,19 +12,19 @@ export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") || FALLBACK_URL;
 
 export const DEFAULT_TITLE =
-  "Mista Concierge Travel — Luxury Caribbean Journeys";
+  "Bucketlist Caribbean by Mista Concierge Travel — Luxury Caribbean Journeys";
 
 // Branded social-share fallback, rendered by app/opengraph-image.tsx.
 export const OG_IMAGE_PATH = "/opengraph-image";
 
 export const SITE = {
-  name: "Mista Concierge Travel",
+  name: "Bucketlist Caribbean by Mista Concierge Travel",
   shortName: "Mista",
   description:
-    "Bespoke luxury journeys across the Caribbean — from the Pitons of St. Lucia to the cays of the Bahamas, crafted by islanders who know every hidden cove.",
+    "Bucketlist Caribbean by Mista Concierge Travel is a luxury travel agency that specializes in crafting bespoke journeys across the Caribbean. We are a team of islanders who know every hidden cove and can help you plan your perfect Caribbean vacation.",
   locale: "en_US",
   email: "hello@mistatravel.com",
-  phone: "+1 246 000 0000",
+
   // Social profiles — add URLs here to populate Organization `sameAs`.
   sameAs: [] as string[],
 } as const;

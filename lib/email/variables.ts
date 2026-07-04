@@ -97,7 +97,7 @@ export const EMAIL_VARIABLES: EmailVariable[] = [
     key: "site_url",
     label: "Site URL",
     description: "Website homepage URL",
-    sample: "https://www.mistaconciergetravel.com",
+    sample: "https://www.bucketlistcaribbean.com",
   },
   {
     key: "site_phone",
@@ -115,7 +115,7 @@ export const EMAIL_VARIABLES: EmailVariable[] = [
     key: "site_address",
     label: "Site address",
     description: "Business address",
-    sample: "Hastings Main Road, Christ Church, Barbados",
+    sample: "",
   },
   {
     key: "site_whatsapp",

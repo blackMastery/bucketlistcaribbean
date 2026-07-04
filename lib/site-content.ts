@@ -84,18 +84,18 @@ export type HomeSectionContent = {
 };
 
 export const DEFAULT_BUSINESS_CONTACT: BusinessContact = {
-  phone: "+1 246 000 0000",
-  phone_href: "tel:+12460000000",
-  email: "hello@mistatravel.com",
-  whatsapp_href: "https://wa.me/12460000000",
-  whatsapp_label: "Message us anytime",
-  whatsapp_short_label: "WhatsApp us",
-  whatsapp_footer_label: "WhatsApp: Message us",
-  office: "Hastings Main Road, Christ Church, Barbados",
-  address_line1: "Hastings Main Road, Christ Church",
-  address_line2: "Barbados, Caribbean",
-  map_label: "Hastings, Christ Church · Barbados",
-  hours: "Mon–Fri · 8:00 AM – 7:00 PM\nSaturday · 9:00 AM – 4:00 PM\nSunday · By appointment",
+  phone: "",
+  phone_href: "",
+  email: "",
+  whatsapp_href: "",
+  whatsapp_label: "",
+  whatsapp_short_label: "",
+  whatsapp_footer_label: "",
+  office: "",
+  address_line1: "",
+  address_line2: "",
+  map_label: "",
+  hours: "",
 };
 
 export const DEFAULT_SOCIAL_LINKS: SocialLink[] = [
