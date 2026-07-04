@@ -4,7 +4,7 @@ import { notFound } from "next/navigation";
 import { BookingWizard } from "@/components/tour/BookingWizard";
 import { Icon } from "@/components/icons";
 import { getTourBySlug, getDefaultPaymentTerms } from "@/lib/queries";
-import { buildMetadata } from "@/lib/seo";
+import { buildMetadata, getSeoConfig } from "@/lib/seo";
 
 export async function generateMetadata({
   params,
@@ -12,13 +12,14 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const tour = await getTourBySlug(slug);
+  const [tour, site] = await Promise.all([getTourBySlug(slug), getSeoConfig()]);
   if (!tour) return { title: "Tour not found", robots: { index: false, follow: false } };
   return buildMetadata({
     title: `Book ${tour.title}`,
     description: `Request a booking for ${tour.title}.`,
     path: `/tours/${tour.slug}/book`,
     noIndex: true,
+    site,
   });
 }
 

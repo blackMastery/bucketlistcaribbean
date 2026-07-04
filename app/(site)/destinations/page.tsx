@@ -3,14 +3,16 @@ import { Reveal } from "@/components/Reveal";
 import { Eyebrow } from "@/components/ui";
 import { getDestinations, getFeaturedDestination, getSiteContent } from "@/lib/queries";
 import { DEFAULT_DESTINATIONS_PAGE, resolveBlock } from "@/lib/site-content";
-import { buildMetadata } from "@/lib/seo";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata = buildMetadata({
-  title: "Destinations",
-  description:
-    "Six signature Caribbean destinations, each with its own rhythm. Find the one that calls to you.",
-  path: "/destinations",
-});
+export async function generateMetadata() {
+  return buildPageMetadata({
+    title: "Destinations",
+    description:
+      "Six signature Caribbean destinations, each with its own rhythm. Find the one that calls to you.",
+    path: "/destinations",
+  });
+}
 
 const HERO_IMAGE =
   "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=2000&q=80";

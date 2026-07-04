@@ -4,7 +4,7 @@ import { Eyebrow, Stars } from "@/components/ui";
 import { Icon, parseRatingText, StatBig } from "@/components/icons";
 import { TourCard } from "@/components/TourCard";
 import { LiveBookingToast } from "@/components/LiveBookingToast";
-import { buildMetadata } from "@/lib/seo";
+import { buildPageMetadata } from "@/lib/seo";
 import {
   getFeaturedTours,
   getDestinations,
@@ -30,7 +30,9 @@ import {
 const HERO_IMAGE =
   "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=2000&q=80";
 
-export const metadata = buildMetadata({ path: "/" });
+export async function generateMetadata() {
+  return buildPageMetadata({ path: "/" });
+}
 
 export default async function HomePage() {
   const [tours, destinations, testimonials, content, favs] = await Promise.all([

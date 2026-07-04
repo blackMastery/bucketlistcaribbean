@@ -1,38 +1,96 @@
 // Central SEO helpers: site config, URL resolution, per-page metadata builder,
-// and JSON-LD structured-data builders. Keep page files terse by funneling all
-// metadata through buildMetadata() and rendering JSON-LD via <JsonLd>.
+// and JSON-LD structured-data builders. Brand copy is resolved from site_content
+// (key "seo") merged with business_contact and social_links.
+import { cache } from "react";
 import type { Metadata } from "next";
 import type { TourDetail } from "@/lib/queries";
+import { getSiteContent } from "@/lib/queries";
+import { getCurrentSite, getCurrentSiteSlug, getSiteDomain } from "@/lib/site";
+import {
+  getDefaultsForSite,
+  resolveBlock,
+  resolveList,
+  type SeoContent,
+} from "@/lib/site-content";
 
-const FALLBACK_URL = "https://www.bucketlistcaribbean.com";
-
-// Single source of truth for the canonical base URL. Reads the env var first so
-// it can be overridden per environment; falls back to the production domain.
 export const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") || FALLBACK_URL;
+  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
+  getSiteDomain(getCurrentSiteSlug());
 
-export const DEFAULT_TITLE =
-  "Bucketlist Caribbean by Mista Concierge Travel — Luxury Caribbean Journeys";
-
-// Branded social-share fallback, rendered by app/opengraph-image.tsx.
 export const OG_IMAGE_PATH = "/opengraph-image";
 
-export const SITE = {
-  name: "Bucketlist Caribbean by Mista Concierge Travel",
-  shortName: "Mista",
-  description:
-    "Bucketlist Caribbean by Mista Concierge Travel is a luxury travel agency that specializes in crafting bespoke journeys across the Caribbean. We are a team of islanders who know every hidden cove and can help you plan your perfect Caribbean vacation.",
-  locale: "en_US",
-  email: "hello@mistatravel.com",
+export type SeoConfig = {
+  name: string;
+  shortName: string;
+  description: string;
+  defaultTitle: string;
+  titleTemplate: string;
+  locale: string;
+  keywords: string[];
+  email: string;
+  phone: string;
+  sameAs: string[];
+  url: string;
+};
 
-  // Social profiles — add URLs here to populate Organization `sameAs`.
-  sameAs: [] as string[],
+function toSeoConfig(
+  seo: SeoContent,
+  contact: { email: string; phone: string },
+  sameAs: string[],
+  url: string,
+): SeoConfig {
+  const site = getCurrentSite();
+  return {
+    name: seo.name || site.name,
+    shortName: seo.short_name,
+    description: seo.description,
+    defaultTitle: seo.default_title,
+    titleTemplate: seo.title_template,
+    locale: seo.locale,
+    keywords: seo.keywords,
+    email: contact.email,
+    phone: contact.phone,
+    sameAs,
+    url,
+  };
+}
+
+/** Resolve SEO config from a site_content map (sync — uses code defaults for missing keys). */
+export function resolveSeoConfig(content: Record<string, unknown> = {}): SeoConfig {
+  const defaults = getDefaultsForSite();
+  const seo = resolveBlock(content, "seo", defaults.seo);
+  const contact = resolveBlock(content, "business_contact", defaults.business_contact);
+  const social = resolveList(content, "social_links", defaults.social_links);
+  const sameAs = social.map((s) => s.href).filter((href) => href && href !== "#");
+  return toSeoConfig(seo, contact, sameAs, SITE_URL);
+}
+
+/** Load SEO config from site_content (deduped per request via React cache). */
+export const getSeoConfig = cache(async (): Promise<SeoConfig> => {
+  const content = await getSiteContent();
+  return resolveSeoConfig(content);
+});
+
+const STATIC_SITE = resolveSeoConfig({});
+
+/** @deprecated Prefer `getSeoConfig()` — kept for sync call sites that use code defaults. */
+export const SITE = {
+  name: STATIC_SITE.name,
+  shortName: STATIC_SITE.shortName,
+  description: STATIC_SITE.description,
+  locale: STATIC_SITE.locale,
+  email: STATIC_SITE.email,
+  phone: STATIC_SITE.phone,
+  sameAs: STATIC_SITE.sameAs,
 } as const;
 
+/** @deprecated Prefer `getSeoConfig()` — kept for sync call sites that use code defaults. */
+export const DEFAULT_TITLE = STATIC_SITE.defaultTitle;
+
 /** Resolve a path (or pass through an already-absolute URL) to an absolute URL. */
-export function absoluteUrl(path = "/"): string {
+export function absoluteUrl(path = "/", baseUrl = SITE_URL): string {
   if (/^https?:\/\//i.test(path)) return path;
-  return `${SITE_URL}${path.startsWith("/") ? path : `/${path}`}`;
+  return `${baseUrl}${path.startsWith("/") ? path : `/${path}`}`;
 }
 
 type OgType = "website" | "article";
@@ -46,6 +104,7 @@ type BuildMetadataOpts = {
   image?: string | null;
   type?: OgType;
   noIndex?: boolean;
+  site?: SeoConfig;
 };
 
 /**
@@ -60,17 +119,15 @@ export function buildMetadata({
   image,
   type = "website",
   noIndex = false,
+  site = STATIC_SITE,
 }: BuildMetadataOpts): Metadata {
-  const url = absoluteUrl(path);
-  const desc = description ?? SITE.description;
-  const fullTitle = title ? `${title} · ${SITE.name}` : DEFAULT_TITLE;
-  // Per-page image (e.g. a tour photo) or the branded site-wide fallback. A
-  // page that sets its own openGraph object does not inherit the file-based
-  // opengraph-image, so we always set images explicitly here.
-  const ogImageUrl = image || absoluteUrl(OG_IMAGE_PATH);
+  const url = absoluteUrl(path, site.url);
+  const desc = description ?? site.description;
+  const fullTitle = title ? `${title} · ${site.name}` : site.defaultTitle;
+  const ogImageUrl = image || absoluteUrl(OG_IMAGE_PATH, site.url);
   const images = image
     ? [{ url: image }]
-    : [{ url: ogImageUrl, width: 1200, height: 630, alt: SITE.name }];
+    : [{ url: ogImageUrl, width: 1200, height: 630, alt: site.name }];
 
   return {
     title,
@@ -80,8 +137,8 @@ export function buildMetadata({
       title: fullTitle,
       description: desc,
       url,
-      siteName: SITE.name,
-      locale: SITE.locale,
+      siteName: site.name,
+      locale: site.locale,
       type,
       images,
     } as Metadata["openGraph"],
@@ -95,50 +152,108 @@ export function buildMetadata({
   };
 }
 
+/** Async wrapper — loads live site_content before building page metadata. */
+export async function buildPageMetadata(
+  opts: Omit<BuildMetadataOpts, "site">,
+): Promise<Metadata> {
+  const site = await getSeoConfig();
+  return buildMetadata({ ...opts, site });
+}
+
+/** Root layout metadata (icons, manifest, robots) from live site_content. */
+export function buildRootMetadata(site: SeoConfig): Metadata {
+  return {
+    metadataBase: new URL(site.url),
+    title: {
+      default: site.defaultTitle,
+      template: site.titleTemplate,
+    },
+    description: site.description,
+    applicationName: site.name,
+    manifest: "/site.webmanifest",
+    icons: {
+      icon: [
+        { url: "/favicon.ico", sizes: "any" },
+        { url: "/favicon-32x32.png", type: "image/png", sizes: "32x32" },
+        { url: "/favicon-16x16.png", type: "image/png", sizes: "16x16" },
+      ],
+      apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
+    },
+    keywords: site.keywords,
+    openGraph: {
+      type: "website",
+      siteName: site.name,
+      locale: site.locale,
+      url: site.url,
+      title: site.defaultTitle,
+      description: site.description,
+      images: [{ url: OG_IMAGE_PATH, width: 1200, height: 630, alt: site.name }],
+    },
+    twitter: {
+      card: "summary_large_image",
+      title: site.defaultTitle,
+      description: site.description,
+      images: [OG_IMAGE_PATH],
+    },
+    robots: {
+      index: true,
+      follow: true,
+      googleBot: {
+        index: true,
+        follow: true,
+        "max-image-preview": "large",
+        "max-snippet": -1,
+        "max-video-preview": -1,
+      },
+    },
+  };
+}
+
 // --- JSON-LD structured data ----------------------------------------------
 
 type JsonLd = Record<string, unknown>;
 
-export function organizationJsonLd(): JsonLd {
+export function organizationJsonLd(site: SeoConfig = STATIC_SITE): JsonLd {
   return {
     "@context": "https://schema.org",
     "@type": "TravelAgency",
-    "@id": `${SITE_URL}/#organization`,
-    name: SITE.name,
-    url: SITE_URL,
-    logo: absoluteUrl("/icon"),
-    image: absoluteUrl("/opengraph-image"),
-    description: SITE.description,
-    email: SITE.email,
-    telephone: SITE.phone,
-    areaServed: "Caribbean",
-    ...(SITE.sameAs.length ? { sameAs: SITE.sameAs } : {}),
+    "@id": `${site.url}/#organization`,
+    name: site.name,
+    url: site.url,
+    logo: absoluteUrl("/icon", site.url),
+    image: absoluteUrl("/opengraph-image", site.url),
+    description: site.description,
+    email: site.email,
+    telephone: site.phone,
+    areaServed:
+      getCurrentSiteSlug() === "bucketlist" ? ["Guyana", "Caribbean"] : "Caribbean",
+    ...(site.sameAs.length ? { sameAs: site.sameAs } : {}),
   };
 }
 
-export function websiteJsonLd(): JsonLd {
+export function websiteJsonLd(site: SeoConfig = STATIC_SITE): JsonLd {
   return {
     "@context": "https://schema.org",
     "@type": "WebSite",
-    "@id": `${SITE_URL}/#website`,
-    name: SITE.name,
-    url: SITE_URL,
-    description: SITE.description,
-    publisher: { "@id": `${SITE_URL}/#organization` },
+    "@id": `${site.url}/#website`,
+    name: site.name,
+    url: site.url,
+    description: site.description,
+    publisher: { "@id": `${site.url}/#organization` },
   };
 }
 
-export function tourJsonLd(tour: TourDetail): JsonLd {
-  const url = absoluteUrl(`/tours/${tour.slug}`);
+export function tourJsonLd(tour: TourDetail, site: SeoConfig = STATIC_SITE): JsonLd {
+  const url = absoluteUrl(`/tours/${tour.slug}`, site.url);
   const data: JsonLd = {
     "@context": "https://schema.org",
     "@type": "Product",
     name: tour.title,
-    description: tour.overview ?? SITE.description,
+    description: tour.overview ?? site.description,
     image: tour.card_image_url,
     url,
     category: "Travel",
-    brand: { "@type": "Brand", name: SITE.name },
+    brand: { "@type": "Brand", name: site.name },
   };
 
   if (tour.price_cents > 0) {
@@ -164,7 +279,10 @@ export function tourJsonLd(tour: TourDetail): JsonLd {
   return data;
 }
 
-export function breadcrumbJsonLd(items: { name: string; path: string }[]): JsonLd {
+export function breadcrumbJsonLd(
+  items: { name: string; path: string }[],
+  site: SeoConfig = STATIC_SITE,
+): JsonLd {
   return {
     "@context": "https://schema.org",
     "@type": "BreadcrumbList",
@@ -172,7 +290,7 @@ export function breadcrumbJsonLd(items: { name: string; path: string }[]): JsonL
       "@type": "ListItem",
       position: i + 1,
       name: item.name,
-      item: absoluteUrl(item.path),
+      item: absoluteUrl(item.path, site.url),
     })),
   };
 }

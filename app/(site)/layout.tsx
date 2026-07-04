@@ -5,14 +5,14 @@ import { Chatbot } from "@/components/Chatbot";
 import { getSiteContent } from "@/lib/queries";
 import type { PromoBannerContent } from "@/lib/format";
 import { resolveBlock, DEFAULT_BUSINESS_CONTACT } from "@/lib/site-content";
-import { SITE } from "@/lib/seo";
+import { getSeoConfig } from "@/lib/seo";
 
 export default async function SiteLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const content = await getSiteContent();
+  const [content, site] = await Promise.all([getSiteContent(), getSeoConfig()]);
   const promo = content.promo_banner as PromoBannerContent | undefined;
   const biz = resolveBlock(content, "business_contact", DEFAULT_BUSINESS_CONTACT);
 
@@ -22,7 +22,7 @@ export default async function SiteLayout({
       <Header />
       <main>{children}</main>
       <Footer />
-      <Chatbot storeName={SITE.name} contact={biz} />
+      <Chatbot storeName={site.name} contact={biz} />
     </>
   );
 }

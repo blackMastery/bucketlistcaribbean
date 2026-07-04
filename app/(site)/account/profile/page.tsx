@@ -3,14 +3,16 @@ import { getAccountProfile } from "@/lib/account-queries";
 import type { TravelPreferences } from "@/lib/account";
 import { ProfileForm } from "@/components/account/ProfileForm";
 import { TravelPreferencesForm } from "@/components/account/TravelPreferencesForm";
-import { buildMetadata } from "@/lib/seo";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata = buildMetadata({
-  title: "Profile",
-  description: "Manage your Mista Concierge Travel profile.",
-  path: "/account/profile",
-  noIndex: true,
-});
+export async function generateMetadata() {
+  return buildPageMetadata({
+    title: "Profile",
+    description: "Manage your profile.",
+    path: "/account/profile",
+    noIndex: true,
+  });
+}
 
 export default async function AccountProfilePage() {
   const supabase = await createClient();

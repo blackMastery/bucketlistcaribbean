@@ -7,7 +7,7 @@ import {
   DEFAULT_BUSINESS_CONTACT,
   type BusinessContact,
 } from "@/lib/site-content";
-import { SITE } from "@/lib/seo";
+import { getSeoConfig } from "@/lib/seo";
 import { formatPrice } from "@/lib/format";
 import {
   isHoursQuestion,
@@ -44,7 +44,7 @@ const TIMEZONE = "America/Guyana";
 const TOUR_SCORE_FLOOR = 0.12;
 
 export async function answerMessage(message: string): Promise<ChatbotAnswer> {
-  const biz = await loadBusinessContact();
+  const [biz, site] = await Promise.all([loadBusinessContact(), getSeoConfig()]);
 
   // Tier 1 — deterministic: hours/schedule questions answer straight from the
   // live settings. "Are you open right now?" phrasings fall through to the
@@ -77,7 +77,7 @@ export async function answerMessage(message: string): Promise<ChatbotAnswer> {
 
   // Tier 3 — LLM with retrieved context.
   const tours = await searchTours(message);
-  const reply = await callOpenAI(buildSystemPrompt(biz, faqs, tours), message);
+  const reply = await callOpenAI(buildSystemPrompt(site.name, biz, faqs, tours), message);
   if (reply) {
     return { reply, matchedFaqId: null, confidence: null, source: "llm" };
   }
@@ -159,6 +159,7 @@ async function incrementFaqUsage(faqId: string): Promise<void> {
 // --- LLM tier ---------------------------------------------------------------
 
 function buildSystemPrompt(
+  siteName: string,
   biz: BusinessContact,
   faqs: FaqContext[],
   tours: TourSearchResult[],
@@ -183,7 +184,7 @@ function buildSystemPrompt(
     )
     .join("\n");
 
-  return `You are the customer-service assistant for ${SITE.name}, a Caribbean luxury travel concierge.
+  return `You are the customer-service assistant for ${siteName}, a Guyanese Caribbean travel company.
 
 Current local date and time: ${now} (${TIMEZONE}).
 Hours of operation (display text — reason from it together with the current time for "are you open now?" questions):

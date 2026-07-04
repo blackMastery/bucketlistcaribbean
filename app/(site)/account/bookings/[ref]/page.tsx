@@ -10,7 +10,7 @@ import { BookingDetailView } from "@/components/account/BookingDetailView";
 import { BookingMessageThread } from "@/components/account/BookingMessageThread";
 import { TravelerPassportPanel } from "@/components/account/TravelerPassportPanel";
 import { ReviewForm } from "@/components/account/ReviewForm";
-import { buildMetadata } from "@/lib/seo";
+import { buildMetadata, getSeoConfig } from "@/lib/seo";
 
 export async function generateMetadata({
   params,
@@ -18,10 +18,12 @@ export async function generateMetadata({
   params: Promise<{ ref: string }>;
 }) {
   const { ref } = await params;
+  const site = await getSeoConfig();
   return buildMetadata({
     title: `Booking ${ref}`,
     path: `/account/bookings/${ref}`,
     noIndex: true,
+    site,
   });
 }
 

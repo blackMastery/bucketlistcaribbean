@@ -20,7 +20,7 @@ export const SITES: readonly SiteConfig[] = [
   {
     id: "a0000000-0000-4000-8000-000000000002",
     slug: "bucketlist",
-    name: "Bucketlist Vacation",
+    name: "Bucketlist Caribbean",
     domain: "https://www.bucketlistcaribbean.com",
   },
 ] as const;

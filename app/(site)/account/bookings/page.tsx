@@ -1,14 +1,16 @@
 import { createClient } from "@/lib/supabase/server";
 import { getUserBookings } from "@/lib/account-queries";
 import { TripTabs } from "@/components/account/TripTabs";
-import { buildMetadata } from "@/lib/seo";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata = buildMetadata({
-  title: "My Trips",
-  description: "View your booking requests with Mista Concierge Travel.",
-  path: "/account/bookings",
-  noIndex: true,
-});
+export async function generateMetadata() {
+  return buildPageMetadata({
+    title: "My Trips",
+    description: "View your booking requests.",
+    path: "/account/bookings",
+    noIndex: true,
+  });
+}
 
 export default async function AccountBookingsPage() {
   const supabase = await createClient();

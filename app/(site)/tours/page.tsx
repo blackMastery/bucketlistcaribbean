@@ -12,16 +12,18 @@ import {
   tourDisplayPriceCents,
   tourHasOccupancyPricing,
 } from "@/lib/tour-filters";
-import { buildMetadata } from "@/lib/seo";
+import { buildPageMetadata } from "@/lib/seo";
 import { getSiteContent } from "@/lib/queries";
 import { DEFAULT_TOURS_PAGE, resolveBlock } from "@/lib/site-content";
 
-export const metadata = buildMetadata({
-  title: "Tours & Experiences",
-  description:
-    "Handcrafted journeys across the Caribbean's most beautiful islands. Filter to find the escape that fits you.",
-  path: "/tours",
-});
+export async function generateMetadata() {
+  return buildPageMetadata({
+    title: "Tours & Experiences",
+    description:
+      "Handcrafted journeys across the Caribbean's most beautiful islands. Filter to find the escape that fits you.",
+    path: "/tours",
+  });
+}
 
 const HERO_IMAGE =
   "https://images.unsplash.com/photo-1473116763249-2faaef81ccda?auto=format&fit=crop&w=2000&q=80";

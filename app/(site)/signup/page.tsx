@@ -1,13 +1,15 @@
 import { Suspense } from "react";
 import { AuthForm } from "@/components/AuthForm";
-import { buildMetadata } from "@/lib/seo";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata = buildMetadata({
-  title: "Create Account",
-  description: "Create a Mista Concierge Travel account to plan and track your journeys.",
-  path: "/signup",
-  noIndex: true,
-});
+export async function generateMetadata() {
+  return buildPageMetadata({
+    title: "Create Account",
+    description: "Create an account to plan and track your journeys.",
+    path: "/signup",
+    noIndex: true,
+  });
+}
 
 export default function SignupPage() {
   return (

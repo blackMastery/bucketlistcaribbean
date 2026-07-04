@@ -1,14 +1,16 @@
 import { createClient } from "@/lib/supabase/server";
 import { getReferralStats } from "@/lib/account-queries";
 import { ReferralPanel } from "@/components/account/ReferralPanel";
-import { buildMetadata } from "@/lib/seo";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata = buildMetadata({
-  title: "Refer a Friend",
-  description: "Share Mista Concierge Travel with friends.",
-  path: "/account/refer",
-  noIndex: true,
-});
+export async function generateMetadata() {
+  return buildPageMetadata({
+    title: "Refer a Friend",
+    description: "Share with friends.",
+    path: "/account/refer",
+    noIndex: true,
+  });
+}
 
 export default async function AccountReferPage() {
   const supabase = await createClient();

@@ -83,6 +83,34 @@ export type HomeSectionContent = {
   link_href?: string;
 };
 
+export type SeoContent = {
+  name: string;
+  short_name: string;
+  description: string;
+  default_title: string;
+  title_template: string;
+  locale: string;
+  keywords: string[];
+};
+
+export const DEFAULT_SEO: SeoContent = {
+  name: "Mista Concierge Travel",
+  short_name: "Mista",
+  description:
+    "Bespoke luxury journeys across the Caribbean — from the Pitons of St. Lucia to the cays of the Bahamas, crafted by islanders who know every hidden cove.",
+  default_title: "Mista Concierge Travel — Luxury Caribbean Journeys",
+  title_template: "%s · Mista Concierge Travel",
+  locale: "en_US",
+  keywords: [
+    "Caribbean luxury travel",
+    "concierge travel",
+    "St. Lucia tours",
+    "Bahamas vacation",
+    "bespoke Caribbean journeys",
+    "luxury island getaways",
+  ],
+};
+
 export const DEFAULT_BUSINESS_CONTACT: BusinessContact = {
   phone: "",
   phone_href: "",
@@ -207,6 +235,7 @@ export function resolveList<T>(
 }
 
 export type SiteContentDefaults = {
+  seo: SeoContent;
   business_contact: BusinessContact;
   social_links: SocialLink[];
   footer: FooterContent;
@@ -220,17 +249,42 @@ export type SiteContentDefaults = {
   home_testimonials: HomeSectionContent;
 };
 
+const BUCKETLIST_TAGLINE =
+  "Guyana's trusted Caribbean travel company — curated tours, all-inclusive getaways, and island journeys across the region.";
+
 const BUCKETLIST_FOOTER: FooterContent = {
   ...DEFAULT_FOOTER,
-  copyright: "© 2026 Bucketlist Vacation. All rights reserved.",
+  tagline: BUCKETLIST_TAGLINE,
+  copyright: "© 2026 Bucketlist Caribbean. All rights reserved.",
 };
 
 const BUCKETLIST_HOME_WHY_CHOOSE: HomeSectionContent = {
   eyebrow: "The Bucketlist Difference",
-  headline: "Why Choose Bucketlist Vacation",
+  headline: "Why Choose Bucketlist Caribbean",
+};
+
+const BUCKETLIST_SEO: SeoContent = {
+  name: "Bucketlist Caribbean",
+  short_name: "Bucketlist",
+  description:
+    "Bucketlist Caribbean is a Guyanese travel company specializing in Caribbean tours and vacations — helping travelers across Guyana and the region plan unforgettable island getaways.",
+  default_title: "Bucketlist Caribbean — Guyanese Caribbean Travel Company",
+  title_template: "%s · Bucketlist Caribbean",
+  locale: "en_US",
+  keywords: [
+    "Guyanese travel agency",
+    "Caribbean travel company",
+    "travel agency Guyana",
+    "Caribbean tours",
+    "Guyana Caribbean vacation",
+    "all inclusive Caribbean",
+    "Punta Cana tours",
+    "island getaways",
+  ],
 };
 
 const MISTA_DEFAULTS: SiteContentDefaults = {
+  seo: DEFAULT_SEO,
   business_contact: DEFAULT_BUSINESS_CONTACT,
   social_links: DEFAULT_SOCIAL_LINKS,
   footer: DEFAULT_FOOTER,
@@ -246,6 +300,7 @@ const MISTA_DEFAULTS: SiteContentDefaults = {
 
 const BUCKETLIST_DEFAULTS: SiteContentDefaults = {
   ...MISTA_DEFAULTS,
+  seo: BUCKETLIST_SEO,
   footer: BUCKETLIST_FOOTER,
   home_why_choose: BUCKETLIST_HOME_WHY_CHOOSE,
 };

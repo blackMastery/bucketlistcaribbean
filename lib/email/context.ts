@@ -1,7 +1,7 @@
 import "server-only";
 
 import { createAdminClient, hasServiceRole } from "@/lib/supabase/admin";
-import { SITE, SITE_URL } from "@/lib/seo";
+import { getSeoConfig } from "@/lib/seo";
 import { getCurrentSiteId } from "@/lib/site";
 import {
   getDefaultsForSite,
@@ -25,6 +25,7 @@ export type BookingEmailContext = {
 };
 
 export async function getEmailBrand(): Promise<EmailBrand> {
+  const site = await getSeoConfig();
   const defaults = getDefaultsForSite();
   let contact: BusinessContact = defaults.business_contact;
   if (hasServiceRole) {
@@ -53,11 +54,11 @@ export async function getEmailBrand(): Promise<EmailBrand> {
     .join(", ");
 
   return {
-    name: SITE.name,
-    email: contact.email || SITE.email,
-    phone: contact.phone || SITE.phone,
+    name: site.name,
+    email: contact.email || site.email,
+    phone: contact.phone || site.phone,
     address: address || contact.office,
-    url: SITE_URL,
+    url: site.url,
     whatsapp: contact.whatsapp_label,
   };
 }

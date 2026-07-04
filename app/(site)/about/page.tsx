@@ -5,14 +5,16 @@ import { Icon, StatBig } from "@/components/icons";
 import { getTeam, getSiteContent } from "@/lib/queries";
 import type { PillarItem, CertItem } from "@/lib/format";
 import { DEFAULT_ABOUT_PAGE, resolveBlock } from "@/lib/site-content";
-import { buildMetadata } from "@/lib/seo";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata = buildMetadata({
-  title: "About Us",
-  description:
-    "We don't sell trips. We craft the journeys you'll talk about for the rest of your life.",
-  path: "/about",
-});
+export async function generateMetadata() {
+  return buildPageMetadata({
+    title: "About Us",
+    description:
+      "We don't sell trips. We craft the journeys you'll talk about for the rest of your life.",
+    path: "/about",
+  });
+}
 
 const HERO_IMAGE =
   "https://images.unsplash.com/photo-1519046904884-53103b34b206?auto=format&fit=crop&w=2000&q=80";

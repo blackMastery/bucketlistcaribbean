@@ -12,7 +12,7 @@ import { DEFAULT_BUSINESS_CONTACT, resolveBlock } from "@/lib/site-content";
 import { tourDisplayPriceCents, tourHasOccupancyPricing } from "@/lib/tour-filters";
 import { JsonLd } from "@/components/seo/JsonLd";
 import { Icon, Stars } from "@/components/icons";
-import { buildMetadata, tourJsonLd, breadcrumbJsonLd } from "@/lib/seo";
+import { buildMetadata, getSeoConfig, tourJsonLd, breadcrumbJsonLd } from "@/lib/seo";
 
 export async function generateStaticParams() {
   const slugs = await getTourSlugs();
@@ -25,7 +25,7 @@ export async function generateMetadata({
   params: Promise<{ slug: string }>;
 }): Promise<Metadata> {
   const { slug } = await params;
-  const tour = await getTourBySlug(slug);
+  const [tour, site] = await Promise.all([getTourBySlug(slug), getSeoConfig()]);
   if (!tour) return { title: "Tour not found", robots: { index: false, follow: false } };
   return buildMetadata({
     title: tour.title,
@@ -33,6 +33,7 @@ export async function generateMetadata({
     path: `/tours/${tour.slug}`,
     image: tour.card_image_url,
     type: "article",
+    site,
   });
 }
 
@@ -42,10 +43,11 @@ export default async function TourDetailPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-  const [tour, defaultTerms, content] = await Promise.all([
+  const [tour, defaultTerms, content, site] = await Promise.all([
     getTourBySlug(slug),
     getDefaultPaymentTerms(),
     getSiteContent(),
+    getSeoConfig(),
   ]);
   if (!tour) notFound();
   const biz = resolveBlock(content, "business_contact", DEFAULT_BUSINESS_CONTACT);
@@ -74,12 +76,15 @@ export default async function TourDetailPage({
     <div>
       <JsonLd
         data={[
-          tourJsonLd(tour),
-          breadcrumbJsonLd([
-            { name: "Home", path: "/" },
-            { name: "Tours", path: "/tours" },
-            { name: tour.title, path: `/tours/${tour.slug}` },
-          ]),
+          tourJsonLd(tour, site),
+          breadcrumbJsonLd(
+            [
+              { name: "Home", path: "/" },
+              { name: "Tours", path: "/tours" },
+              { name: tour.title, path: `/tours/${tour.slug}` },
+            ],
+            site,
+          ),
         ]}
       />
 

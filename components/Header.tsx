@@ -38,7 +38,7 @@ function Logo({ onClick }: { onClick?: () => void }) {
           Mista Concierge
         </span>
         <span className="hidden font-sans text-[8.5px] font-semibold uppercase tracking-[2.8px] text-[#C9A24A] min-[400px]:inline">
-          Bucketlist Vacation · Caribbean
+          Guyanese · Caribbean Travel
         </span>
       </span>
     </Link>

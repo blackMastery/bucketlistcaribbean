@@ -5,14 +5,16 @@ import { BookingCard } from "@/components/account/BookingCard";
 import { createClient } from "@/lib/supabase/server";
 import { getAccountOverview } from "@/lib/account-queries";
 import { nextUpcomingBooking } from "@/lib/account";
-import { buildMetadata } from "@/lib/seo";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata = buildMetadata({
-  title: "My Account",
-  description: "View your Mista Concierge Travel bookings and saved tours.",
-  path: "/account",
-  noIndex: true,
-});
+export async function generateMetadata() {
+  return buildPageMetadata({
+    title: "My Account",
+    description: "View your bookings and saved tours.",
+    path: "/account",
+    noIndex: true,
+  });
+}
 
 export default async function AccountOverviewPage() {
   const supabase = await createClient();

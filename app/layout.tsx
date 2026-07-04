@@ -3,10 +3,8 @@ import { Playfair_Display, Montserrat, Inter } from "next/font/google";
 import "./globals.css";
 import { JsonLd } from "@/components/seo/JsonLd";
 import {
-  SITE,
-  SITE_URL,
-  DEFAULT_TITLE,
-  OG_IMAGE_PATH,
+  buildRootMetadata,
+  getSeoConfig,
   organizationJsonLd,
   websiteJsonLd,
 } from "@/lib/seo";
@@ -41,69 +39,23 @@ export const viewport: Viewport = {
   themeColor: "#06090a",
 };
 
-export const metadata: Metadata = {
-  metadataBase: new URL(SITE_URL),
-  title: {
-    default: DEFAULT_TITLE,
-    template: "%s · Mista Concierge Travel",
-  },
-  description: SITE.description,
-  applicationName: SITE.name,
-  manifest: "/site.webmanifest",
-  icons: {
-    icon: [
-      { url: "/favicon.ico", sizes: "any" },
-      { url: "/favicon-32x32.png", type: "image/png", sizes: "32x32" },
-      { url: "/favicon-16x16.png", type: "image/png", sizes: "16x16" },
-    ],
-    apple: [{ url: "/apple-touch-icon.png", sizes: "180x180", type: "image/png" }],
-  },
-  keywords: [
-    "Caribbean luxury travel",
-    "concierge travel",
-    "St. Lucia tours",
-    "Bahamas vacation",
-    "bespoke Caribbean journeys",
-    "luxury island getaways",
-  ],
-  openGraph: {
-    type: "website",
-    siteName: SITE.name,
-    locale: SITE.locale,
-    url: SITE_URL,
-    title: DEFAULT_TITLE,
-    description: SITE.description,
-    images: [{ url: OG_IMAGE_PATH, width: 1200, height: 630, alt: SITE.name }],
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: DEFAULT_TITLE,
-    description: SITE.description,
-    images: [OG_IMAGE_PATH],
-  },
-  robots: {
-    index: true,
-    follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      "max-image-preview": "large",
-      "max-snippet": -1,
-      "max-video-preview": -1,
-    },
-  },
-};
+export async function generateMetadata(): Promise<Metadata> {
+  const site = await getSeoConfig();
+  return buildRootMetadata(site);
+}
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
+  const site = await getSeoConfig();
+
   return (
     <html
       lang="en"
       className={`${playfair.variable} ${montserrat.variable} ${inter.variable}`}
     >
       <body>
-        <JsonLd data={[organizationJsonLd(), websiteJsonLd()]} />
+        <JsonLd data={[organizationJsonLd(site), websiteJsonLd(site)]} />
         {children}
       </body>
     </html>

@@ -1,7 +1,7 @@
 import { Eyebrow } from "@/components/ui";
 import { ContactForm } from "@/components/ContactForm";
 import { Icon } from "@/components/icons";
-import { buildMetadata } from "@/lib/seo";
+import { buildPageMetadata } from "@/lib/seo";
 import { getSiteContent } from "@/lib/queries";
 import {
   contactChannels,
@@ -12,12 +12,14 @@ import {
   DEFAULT_SOCIAL_LINKS,
 } from "@/lib/site-content";
 
-export const metadata = buildMetadata({
-  title: "Contact",
-  description:
-    "Tell us your dream and our concierge team will design it. We respond within 24 hours.",
-  path: "/contact",
-});
+export async function generateMetadata() {
+  return buildPageMetadata({
+    title: "Contact",
+    description:
+      "Tell us your dream and our concierge team will design it. We respond within 24 hours.",
+    path: "/contact",
+  });
+}
 
 const HERO_IMAGE =
   "https://images.unsplash.com/photo-1505228395891-9a51e7e86bf6?auto=format&fit=crop&w=2000&q=80";

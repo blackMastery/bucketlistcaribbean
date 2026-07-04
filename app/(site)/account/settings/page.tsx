@@ -1,14 +1,16 @@
 import { createClient } from "@/lib/supabase/server";
 import { AccountSettingsForm } from "@/components/account/AccountSettingsForm";
 import { hasServiceRole } from "@/lib/supabase/admin";
-import { buildMetadata } from "@/lib/seo";
+import { buildPageMetadata } from "@/lib/seo";
 
-export const metadata = buildMetadata({
-  title: "Account Settings",
-  description: "Manage your Mista Concierge Travel account settings.",
-  path: "/account/settings",
-  noIndex: true,
-});
+export async function generateMetadata() {
+  return buildPageMetadata({
+    title: "Account Settings",
+    description: "Manage your account settings.",
+    path: "/account/settings",
+    noIndex: true,
+  });
+}
 
 export default async function AccountSettingsPage() {
   const supabase = await createClient();
