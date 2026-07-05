@@ -18,6 +18,7 @@ export const SITE_URL =
   getSiteDomain(getCurrentSiteSlug());
 
 export const OG_IMAGE_PATH = "/opengraph-image";
+export const LOGO_FULL_PATH = "/logo-full.png";
 
 export type SeoConfig = {
   name: string;
@@ -220,8 +221,8 @@ export function organizationJsonLd(site: SeoConfig = STATIC_SITE): JsonLd {
     "@id": `${site.url}/#organization`,
     name: site.name,
     url: site.url,
-    logo: absoluteUrl("/icon", site.url),
-    image: absoluteUrl("/opengraph-image", site.url),
+    logo: absoluteUrl(LOGO_FULL_PATH, site.url),
+    image: absoluteUrl(OG_IMAGE_PATH, site.url),
     description: site.description,
     email: site.email,
     telephone: site.phone,
