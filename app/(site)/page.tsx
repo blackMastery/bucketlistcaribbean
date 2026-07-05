@@ -1,7 +1,8 @@
 import Link from "next/link";
+import { HomeHero } from "@/components/HomeHero";
 import { Reveal } from "@/components/Reveal";
 import { Eyebrow, Stars } from "@/components/ui";
-import { Icon, parseRatingText, StatBig } from "@/components/icons";
+import { Icon } from "@/components/icons";
 import { TourCard } from "@/components/TourCard";
 import { LiveBookingToast } from "@/components/LiveBookingToast";
 import { buildPageMetadata } from "@/lib/seo";
@@ -26,9 +27,6 @@ import {
   DEFAULT_HOME_WHY_CHOOSE,
   resolveBlock,
 } from "@/lib/site-content";
-
-const HERO_IMAGE =
-  "https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=2000&q=80";
 
 export async function generateMetadata() {
   return buildPageMetadata({ path: "/" });
@@ -57,63 +55,7 @@ export default async function HomePage() {
 
   return (
     <div className="overflow-x-hidden">
-      {/* HERO */}
-      <section
-        className="relative flex min-h-[560px] flex-col sm:min-h-[680px]"
-        style={{
-          background: `linear-gradient(90deg,rgba(6,9,10,0.9) 0%,rgba(6,9,10,0.66) 38%,rgba(6,9,10,0.28) 68%,rgba(6,9,10,0.1) 100%),url('${HERO_IMAGE}') center/cover`,
-        }}
-      >
-        <div className="flex flex-1 items-center px-[22px] pb-12 pt-[88px] sm:px-8 sm:pb-16 sm:pt-[120px]">
-          <div className="mx-auto w-full max-w-[1280px]">
-            <Reveal className="max-w-[680px]">
-              <div className="mb-6 inline-flex items-center gap-2 rounded-[30px] border border-gold/50 bg-gold/[0.18] px-4 py-[7px]">
-                <span className="inline-flex items-center gap-1 text-gold">
-                  <Icon name="star" size={13} fill="currentColor" strokeWidth={0} />
-                  <span className="font-sans text-[12.5px] font-medium tracking-[0.3px] text-sand">
-                    {parseRatingText(hero.badge_rating)}
-                  </span>
-                </span>
-                <span className="font-sans text-[12.5px] font-medium tracking-[0.3px] text-sand">
-                  {hero.badge_text}
-                </span>
-              </div>
-              <h1 className="m-0 mb-5 font-serif text-[34px] font-bold leading-[1.08] text-sand [text-shadow:0_2px_24px_rgba(0,0,0,0.6)] sm:text-[48px] sm:leading-[1.05] lg:text-[64px]">
-                {hero.headline}
-              </h1>
-              <p className="m-0 mb-8 max-w-[560px] text-[16px] leading-[1.6] text-sand/90 [text-shadow:0_1px_12px_rgba(0,0,0,0.55)] sm:text-[19px]">
-                {hero.description}
-              </p>
-              <div className="flex flex-col items-stretch gap-3.5 sm:flex-row sm:items-center sm:gap-4">
-                <Link
-                  href={hero.primary_cta_href}
-                  className="rounded-lg bg-green px-9 py-4 text-center font-sans text-[16px] font-semibold text-sand no-underline shadow-[0_8px_24px_rgba(27,122,92,0.4)] transition-transform hover:-translate-y-0.5 hover:bg-green-dark"
-                >
-                  {hero.primary_cta_label}
-                </Link>
-                <Link
-                  href={hero.secondary_cta_href}
-                  className="rounded-lg border-2 border-sand/50 bg-white/[0.08] px-8 py-3.5 text-center font-sans text-[16px] font-semibold text-sand no-underline transition-colors hover:border-gold hover:bg-white/[0.16]"
-                >
-                  {hero.secondary_cta_label}
-                </Link>
-              </div>
-            </Reveal>
-          </div>
-        </div>
-        <div className="flex flex-wrap justify-center gap-x-8 gap-y-5 border-t border-gold/25 bg-[rgba(6,9,10,0.62)] px-[22px] py-5 backdrop-blur-sm sm:gap-16 sm:px-8 sm:py-[22px]">
-          {stats.map((st) => (
-            <div key={st.label} className="min-w-[40%] text-center sm:min-w-0">
-              <div className="font-serif text-[24px] font-bold text-gold sm:text-[26px]">
-                <StatBig value={st.num} starSize={18} />
-              </div>
-              <div className="font-sans text-[12px] uppercase tracking-[0.5px] text-sand/80">
-                {st.label}
-              </div>
-            </div>
-          ))}
-        </div>
-      </section>
+      <HomeHero hero={hero} stats={stats} />
 
       {/* FEATURED TOURS */}
       <section className="mx-auto max-w-[1280px] px-8 py-[90px] max-[640px]:px-[22px] max-[640px]:py-14">
