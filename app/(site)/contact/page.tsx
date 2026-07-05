@@ -23,8 +23,6 @@ export async function generateMetadata() {
 
 const HERO_IMAGE =
   "https://images.unsplash.com/photo-1505228395891-9a51e7e86bf6?auto=format&fit=crop&w=2000&q=80";
-const MAP_IMAGE =
-  "https://images.unsplash.com/photo-1524813686514-a57563d77965?auto=format&fit=crop&w=900&q=80";
 
 export default async function ContactPage() {
   const content = await getSiteContent();
@@ -101,19 +99,6 @@ export default async function ContactPage() {
                     <Icon name={s.icon} size={18} strokeWidth={1.75} />
                   </a>
                 ))}
-              </div>
-            </div>
-
-            <div
-              className="relative h-[200px] overflow-hidden rounded-2xl shadow-[0_2px_8px_rgba(0,0,0,0.05)]"
-              style={{ background: `url('${MAP_IMAGE}') center/cover` }}
-            >
-              <div className="absolute inset-0 bg-gradient-to-b from-[rgba(15,42,58,0.1)] to-[rgba(15,42,58,0.55)]" />
-              <div className="absolute bottom-4 left-[18px] flex items-center gap-2.5 text-sand">
-                <span className="flex h-[34px] w-[34px] items-center justify-center rounded-full bg-gold text-blue">
-                  <Icon name="map-pin" size={16} strokeWidth={2} />
-                </span>
-                <span className="font-sans text-[14px] font-semibold">{biz.map_label}</span>
               </div>
             </div>
           </div>

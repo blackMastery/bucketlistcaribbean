@@ -28,7 +28,7 @@ export async function Footer() {
                 <Image src="/logo-mark.png" alt="Mista Concierge" fill className="object-cover" />
               </span>
               <span className="text-gold-gradient font-serif text-[19px] font-bold">
-                Mista Concierge
+                Bucketlist Caribbean
               </span>
             </div>
             <p className="mb-5 max-w-[320px] text-[14px] leading-[1.7] text-[#9AA39E]">

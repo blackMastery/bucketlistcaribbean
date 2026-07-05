@@ -31,14 +31,19 @@ function Logo({ onClick }: { onClick?: () => void }) {
       className="flex flex-shrink-0 items-center gap-[13px] no-underline"
     >
       <span className="relative h-[46px] w-[46px] overflow-hidden rounded-full border-[1.5px] border-gold/65 shadow-[0_0_0_3px_rgba(227,168,40,0.1)]">
-        <Image src="/logo-mark.png" alt="Mista Concierge" fill className="object-cover" />
+        <Image
+          src="/logo-mark.png"
+          alt="Mista Concierge"
+          fill
+          className="object-cover"
+        />
       </span>
       <span className="flex flex-col leading-[1.1]">
         <span className="text-gold-gradient font-serif text-[19px] font-bold tracking-[0.2px]">
-          Mista Concierge
+          Bucketlist Caribbean
         </span>
         <span className="hidden font-sans text-[8.5px] font-semibold uppercase tracking-[2.8px] text-[#C9A24A] min-[400px]:inline">
-          Guyanese · Caribbean Travel
+          by Mista Concierge Travel Co
         </span>
       </span>
     </Link>
@@ -92,7 +97,11 @@ export function Header() {
               initial={{ x: "-100%" }}
               animate={{ x: 0 }}
               exit={{ x: "-100%" }}
-              transition={{ type: "tween", duration: 0.28, ease: [0.22, 1, 0.36, 1] }}
+              transition={{
+                type: "tween",
+                duration: 0.28,
+                ease: [0.22, 1, 0.36, 1],
+              }}
               className="fixed bottom-0 left-0 top-0 z-[1002] flex w-[78%] max-w-[320px] flex-col gap-1.5 overflow-y-auto border-r border-gold/20 bg-[#0A0D0C] p-6 shadow-[8px_0_32px_rgba(0,0,0,0.5)]"
             >
               <div className="mb-5">
