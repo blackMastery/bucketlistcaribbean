@@ -25,7 +25,7 @@ export const SITES: readonly SiteConfig[] = [
   },
 ] as const;
 
-export const DEFAULT_SITE_SLUG: SiteSlug = "mista";
+export const DEFAULT_SITE_SLUG: SiteSlug = "bucketlist";
 
 export const ADMIN_CONTENT_SITE_COOKIE = "admin_content_site_id";
 
@@ -43,9 +43,9 @@ export function resolveSiteSlug(raw?: string | null): SiteSlug {
   return "mista";
 }
 
-/** Current frontend site from SITE_ID env (defaults to mista). */
+/** Current frontend site from SITE_ID env (defaults to bucketlist). */
 export function getCurrentSiteSlug(): SiteSlug {
-  return resolveSiteSlug(process.env.SITE_ID);
+  return resolveSiteSlug(process.env.SITE_ID ?? DEFAULT_SITE_SLUG);
 }
 
 export function getCurrentSiteId(): string {
@@ -64,4 +64,14 @@ export function getSiteDomain(slug: SiteSlug): string {
     );
   }
   return process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ?? getSiteBySlug("mista")!.domain;
+}
+
+/** Canonical site URL — localhost env override for dev; registry domain in production. */
+export function getSiteUrl(): string {
+  const slug = getCurrentSiteSlug();
+  const envUrl = process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "");
+  if (envUrl && /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/i.test(envUrl)) {
+    return envUrl;
+  }
+  return getSiteDomain(slug);
 }

@@ -5,7 +5,7 @@ import { cache } from "react";
 import type { Metadata } from "next";
 import type { TourDetail } from "@/lib/queries";
 import { getSiteContent } from "@/lib/queries";
-import { getCurrentSite, getCurrentSiteSlug, getSiteDomain } from "@/lib/site";
+import { getCurrentSite, getCurrentSiteSlug, getSiteDomain, getSiteUrl } from "@/lib/site";
 import {
   getDefaultsForSite,
   resolveBlock,
@@ -13,12 +13,10 @@ import {
   type SeoContent,
 } from "@/lib/site-content";
 
-export const SITE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
-  getSiteDomain(getCurrentSiteSlug());
+export const SITE_URL = getSiteUrl();
 
-export const OG_IMAGE_PATH = "/opengraph-image";
 export const LOGO_FULL_PATH = "/logo-full.png";
+export const OG_IMAGE_PATH = LOGO_FULL_PATH;
 
 export type SeoConfig = {
   name: string;
@@ -63,7 +61,7 @@ export function resolveSeoConfig(content: Record<string, unknown> = {}): SeoConf
   const contact = resolveBlock(content, "business_contact", defaults.business_contact);
   const social = resolveList(content, "social_links", defaults.social_links);
   const sameAs = social.map((s) => s.href).filter((href) => href && href !== "#");
-  return toSeoConfig(seo, contact, sameAs, SITE_URL);
+  return toSeoConfig(seo, contact, sameAs, getSiteUrl());
 }
 
 /** Load SEO config from site_content (deduped per request via React cache). */
@@ -128,7 +126,7 @@ export function buildMetadata({
   const ogImageUrl = image || absoluteUrl(OG_IMAGE_PATH, site.url);
   const images = image
     ? [{ url: image }]
-    : [{ url: ogImageUrl, width: 1200, height: 630, alt: site.name }];
+    : [{ url: ogImageUrl, width: 940, height: 1430, alt: site.name }];
 
   return {
     title,
@@ -188,7 +186,7 @@ export function buildRootMetadata(site: SeoConfig): Metadata {
       url: site.url,
       title: site.defaultTitle,
       description: site.description,
-      images: [{ url: OG_IMAGE_PATH, width: 1200, height: 630, alt: site.name }],
+      images: [{ url: OG_IMAGE_PATH, width: 940, height: 1430, alt: site.name }],
     },
     twitter: {
       card: "summary_large_image",
